@@ -79,13 +79,11 @@ namespace IndividualProjectBrief_PartA
         }
 
         //Each course can have multiple trainers
-
+        List<Trainer> Trainers = new List<Trainer>();
         //Each course can have multiple students
-
+        List<Course> Courses = new List<Course>();
         //Each course can have multiple assignments
-
-
-        //Constructor
+        List<Assignment> Assignments = new List<Assignment>();
 
         public Course(string Title, string Stream, string Type, DateTime Start_Date, DateTime End_Date)
         {
@@ -346,11 +344,7 @@ namespace IndividualProjectBrief_PartA
         public List<Assignment> Assignments = new List<Assignment>();
 
         public List<Course> Courses = new List<Course>();
-
-        
-
-
-
+       
     }
 
     class Program
@@ -518,7 +512,8 @@ namespace IndividualProjectBrief_PartA
             PeopleCert.Students.Add(new Student("Anastasia", "Kalokyri", DateTime.Parse("24, 08, 1986"), 2000));
             PeopleCert.Students.Add(new Student("Agapi", "Kalokyri", DateTime.Parse("16, 02, 1996"), 2000));
             PeopleCert.Students.Add(new Student("Ilias", "Diamantakos", DateTime.Parse("30, 10, 1990"), 2000));
-            PeopleCert.Students.Add(new Student("Agapi", "Kalokyri", DateTime.Parse("16, 02, 1996"), 2000));
+            
+            Console.WriteLine($"\n{PeopleCert.Students.Count} records of Students added successfully!");
 
             PeopleCert.Trainers.Add(new Trainer("Michael", "Scott", "Project Management"));
             PeopleCert.Trainers.Add(new Trainer("Dwight", "Schrute", "Sales Management"));
@@ -531,6 +526,8 @@ namespace IndividualProjectBrief_PartA
             PeopleCert.Trainers.Add(new Trainer("Kevin", "Malone", "Systems Programming"));
             PeopleCert.Trainers.Add(new Trainer("Kelly", "Kapoor", "Logic, Discrete Mathematical Structures"));
 
+            Console.WriteLine($"\n{PeopleCert.Trainers.Count} records of Trainers added successfully!");
+
             PeopleCert.Courses.Add(new Course("Adobe illustrator", "Graphics & Engineering Designing", "Design", DateTime.Parse("26,03,2021"),DateTime.Parse("26,03,2021")));
             PeopleCert.Courses.Add(new Course("Advanced Administration for Citrix", "Systems Engineering", "Virtual Machines",DateTime.Parse("01,04,2021"),DateTime.Parse("30,09,2021")));
             PeopleCert.Courses.Add(new Course("Fundamentals of Unix", "Systems Engineering", "Operation Systems", DateTime.Parse("01,04,2021"),DateTime.Parse("30,09,2021")));
@@ -541,6 +538,8 @@ namespace IndividualProjectBrief_PartA
             PeopleCert.Courses.Add(new Course("Digital Marketing", "Marketing", "Digital Marketing Engineering",DateTime.Parse("01,04,2021"),DateTime.Parse("30,09,2021")));
             PeopleCert.Courses.Add(new Course("Office 365", "Infrastructure", "IT Infrastructure", DateTime.Parse("01,04,2021"),DateTime.Parse("30,09,2021")));
             PeopleCert.Courses.Add(new Course("Advanced Geographic Information Systems", "Information Systems", "Geographic Systems",DateTime.Parse("01,04,2021"),DateTime.Parse("30,09,2021")));
+
+            Console.WriteLine($"\n{PeopleCert.Courses.Count} records of Courses added successfully!");
 
             PeopleCert.Assignments.Add(new Assignment("Gant-Chart", "Project Management", DateTime.Parse("26,03,2021"), 10, 90));
             PeopleCert.Assignments.Add(new Assignment("Budget Analysis", "Financial analysis of project", DateTime.Parse("26,03,2021"), 70, 30));
@@ -553,6 +552,7 @@ namespace IndividualProjectBrief_PartA
             PeopleCert.Assignments.Add(new Assignment("Software Development B", "Software Implementation", DateTime.Parse("26,03,2021"), 0, 100));
             PeopleCert.Assignments.Add(new Assignment("QA Testing Methods", "Testing methodologies", DateTime.Parse("26,03,2021"), 0, 100));
 
+            Console.WriteLine($"\n{PeopleCert.Assignments.Count} records of Assignments added successfully!");
 
 
 
