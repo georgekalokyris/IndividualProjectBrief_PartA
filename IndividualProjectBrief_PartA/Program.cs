@@ -95,6 +95,11 @@ namespace IndividualProjectBrief_PartA
             this.StartDate = Start_Date;
             this.EndDate = End_Date;
         }
+
+        public override string ToString()
+        {
+            return $"Title: {_title}, Stream: {_stream}, Type: {_type}, Start Date: {_start_date.ToString("dd/MM/yyyy")}, End Date: {_end_date.ToString("dd/MM/yyyy")}";
+        }
     }
 
     class Trainer
@@ -145,13 +150,17 @@ namespace IndividualProjectBrief_PartA
 
         public Trainer(string FirstName, string LastName, string Subject)
         {
-                this.FirstName = FirstName;
-                this.LastName = LastName;
-                this.Subject = Subject;
+            this.FirstName = FirstName;
+            this.LastName = LastName;
+            this.Subject = Subject;
         }
-    
-    
-    
+
+        public override string ToString()
+        {
+            return $"Firstname: {_firstName}, Lastname: {_lastName}, Subject: {_subject}";
+        }
+
+
     }
 
 
@@ -168,7 +177,7 @@ namespace IndividualProjectBrief_PartA
 
         private int _tuitionFees;
 
-        
+
         //Public properties
         public string FirstName
         {
@@ -233,7 +242,7 @@ namespace IndividualProjectBrief_PartA
 
         public override string ToString()
         {
-            return $"Firstname: {FirstName}, Lastname: {LastName}, Date of birth: {DateOfBirth}, Tuition Fees: {Fees}£";
+            return $"Firstname: {_firstName}, Lastname: {_lastName}, Date of birth: {_dateOfBirth.ToString("dd/MM/yyyy")}, Tuition Fees: {_tuitionFees}$";
         }
     }
 
@@ -252,8 +261,8 @@ namespace IndividualProjectBrief_PartA
         private int _totalMark;
 
         //Public properties
-        public string Title 
-        { 
+        public string Title
+        {
             get
             {
                 return _title;
@@ -298,7 +307,7 @@ namespace IndividualProjectBrief_PartA
                 _oralMark = value;
             }
         }
-    
+
         public int TotalMark
         {
             get
@@ -321,6 +330,11 @@ namespace IndividualProjectBrief_PartA
             this.TotalMark = TotalMark;
         }
 
+        public override string ToString()
+        {
+            return $"Title: {_title}, Description: {Description}, Submission Date:{_subDateTime.ToString("dd/MM/yyyy")}, OralMark: {_oralMark}, TotalMark: {_totalMark}";
+        }
+
     }
 
     class School
@@ -332,55 +346,130 @@ namespace IndividualProjectBrief_PartA
         public List<Assignment> Assignments = new List<Assignment>();
 
         public List<Course> Courses = new List<Course>();
+
+        
+
+
+
     }
 
     class Program
     {
-       
+
         static void Main(string[] args)
         {
 
             School PeopleCert = new School();
-           
+
 
             Console.WriteLine("Welcome to Peoplecert's Student System");
 
-            //Top Menu
-            Console.WriteLine("\n Please Select an option to continue");
-            Console.WriteLine("Press 1 for Data Modification");
-            Console.WriteLine("Press 2 for Data Presentation");
-            Console.WriteLine("Press 3 for Deadline Assignment Checks");
+            
+            bool ContM = true;
+            while (ContM)
+            {
+                //Top Menu
+                Console.WriteLine("\nPlease Select an option to continue");
+                Console.WriteLine("\nPress 1 for Data Modification");
+                Console.WriteLine("Press 2 for Data Presentation");
+                Console.WriteLine("Press 3 for Deadline Assignment Checks");
+                Console.WriteLine("Press x key to exit");
+
+
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        DataManipulation(PeopleCert);
+                        break;
+                    case "2":
+                        DataPresentation(PeopleCert);
+                        break;
+                    case "3":
+                        DeadlineCheck();
+                        break;
+                    case "x":
+                        Console.WriteLine("Thank you for using the Student System");
+                        ContM = false;
+                        break;
+                        Console.ReadKey();
+                    default:
+                        continue;
+                }
+            }
+        }
+
+
+
+        private static void DataPresentation(School PeopleCert)
+        {
+            Console.WriteLine("Please select the type of object that you would like to preview");
+
+            Console.WriteLine("Press 1 to view the list of all students");
+            Console.WriteLine("Press 2 to view the list of all trainers");
+            Console.WriteLine("Press 3 to view the list of all assignments");
+            Console.WriteLine("Press 4 to view the list of all courses");
+
+            //Console.WriteLine("Press 5 to view the list of all students per course");
+            //Console.WriteLine("Press 6 to view the list of all assignments per course");
+            //Console.WriteLine("Press 7 to view the list of all assignments per student");
+            //Console.WriteLine("Press 8 to view the list of students that belong to more than one course");
 
             switch (Console.ReadLine())
             {
                 case "1":
-                    DataManipulation(PeopleCert);
-                    
+                    DataPreview(1);
                     break;
                 case "2":
-                    DataPresentation();
+                    DataPreview(2);
                     break;
                 case "3":
-                    DeadlineCheck();
+                    DataPreview(3);
                     break;
-                default:
+                case "4":
+                    DataPreview(4);
                     break;
+
+            }
+
+            void DataPreview(int n)
+            {
+                if (n == 1)
+                {
+                    foreach (var i in PeopleCert.Students)
+                    {
+                        Console.WriteLine(i);
+                    }
+                }
+                else if (n == 2)
+                {
+                    foreach (var i in PeopleCert.Trainers)
+                    {
+                        Console.WriteLine(i);
+                    }
+                }
+                else if (n == 3)
+                {
+                    foreach (var i in PeopleCert.Assignments) ;
+                }
+                else if (n == 4)
+                {
+                    foreach (var i in PeopleCert.Courses) ;
+                }
+                else Console.WriteLine("No valid option selected");
+
+
+
+
+
 
             }
 
 
         }
 
-       
-
-        private static void DataPresentation()
-        {
-            Console.WriteLine("Please select the type of object that you would like to preview");
-        }
-
         private static void DataManipulation(School PeopleCert)
         {
-            //Menu 1
+            
             Console.WriteLine("Please select an option to continue");
             Console.WriteLine("Press 1 to user synthetic data");
             Console.WriteLine("Press 2 to manually enter data");
@@ -403,85 +492,226 @@ namespace IndividualProjectBrief_PartA
         private static void SyntheticData(School PeopleCert)
         {
             Console.WriteLine("Option '1' Selected - Generating Synthetic Data");
+
+            PeopleCert.Students.Add(new Student("George", "Kalokyris", DateTime.Parse("19, 10, 1994"),2000));
+
+
+            
+
+
+
+
         }
         private static void ManualData(School PeopleCert)
         {
-
-            Console.WriteLine("Option 2 Selected - Please select the table that you would like to populate");
-            Console.WriteLine("Press 1 for Students");
-            Console.WriteLine("Press 2 for Trainers");
-            Console.WriteLine("Press 3 for Assignments");
-            Console.WriteLine("Press 4 for Courses");
-
-            switch(Console.ReadLine())
+            Console.WriteLine("Option '2' Selected - Manual Data Input");
+            bool ContM2 = true;
+            while (ContM2)
             {
-                case "1":
-                    AddStudents();
-                    break;
-                case "2":
-                    AddTrainers();
-                    break;
-                case "3":
-                    AddAssignents();
-                    break;
-                case "4":
-                    AddCourses();
-                    break;
-                default:
-                    break;
+                Console.WriteLine("Please select the table that you would like to populate");
+                Console.WriteLine("\nPress 1 for Students");
+                Console.WriteLine("Press 2 for Trainers");
+                Console.WriteLine("Press 3 for Assignments");
+                Console.WriteLine("Press 4 for Courses");
+                Console.WriteLine("Press x to return to the Main Menu");
+
+
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        AddStudents();
+                        ContM2 = true;
+                        continue;
+                    case "2":
+                        AddTrainers();
+                        ContM2 = true;
+                        continue;
+                    case "3":
+                        AddAssignents();
+                        ContM2 = true;
+                        continue;
+                    case "4":
+                        AddCourses();
+                        ContM2 = true;
+                        continue;
+                    case "x":
+                        ContM2 = false;
+                        break;
+                    default:
+                        continue;
+                }
+
             }
 
             void AddStudents()
             {
-                Console.WriteLine("Adding Students");
-                Console.WriteLine("Please enter the student's First Name");
-                string FirstName = Console.ReadLine();
+                bool ContS = true;
+                while (ContS)
+                {
+                    Console.WriteLine("Adding Students");
+                    Console.WriteLine("Please enter the student's first name");
+                    string FirstName = Console.ReadLine();
 
-                Console.WriteLine("Please enter the student's Last Name");
-                string LastName = Console.ReadLine();
+                    Console.WriteLine("Please enter the student's last name");
+                    string LastName = Console.ReadLine();
 
-                Console.WriteLine("Please enter the student's dateOfBirth");
-                DateTime DateOfBirth = Convert.ToDateTime(Console.ReadLine());
+                    Console.WriteLine("Please enter the student's dateOfBirth");
+                    DateTime DateOfBirth = Convert.ToDateTime(Console.ReadLine());
 
-                Console.WriteLine("Please enter the amount of the total tuitionFees");
-                int Fees = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Please enter the amount of the total tuitionFees");
+                    int Fees = int.Parse(Console.ReadLine());
 
-                
-                PeopleCert.Students.Add(new Student(FirstName, LastName, DateOfBirth, Fees));
 
-                var LastStudent = PeopleCert.Students.Last();
-                
-                Console.WriteLine(LastStudent);
-                
-                    
+                    PeopleCert.Students.Add(new Student(FirstName, LastName, DateOfBirth, Fees));
+
+                    var LastStudent = PeopleCert.Students.Last();
+                    Console.WriteLine("\nRecord added: ");
+                    Console.WriteLine(LastStudent);
+
+                    Console.WriteLine("\n\nPress enter to continue adding records or 'x' to return to the top menu");
+
+                    if (Console.ReadLine() == "x")
+                    {
+                        ContS = false;
+                        break;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+
             }
 
             void AddTrainers()
             {
-                Console.WriteLine("Adding Trainers");
+                bool ContT = true;
+                while (ContT)
+                {
+                    Console.WriteLine("Adding Trainers");
+
+                    Console.WriteLine("Please enter the trainer's first name");
+                    string FirstName = Console.ReadLine();
+
+                    Console.WriteLine("Please enter the trainer's last name");
+                    string LastName = Console.ReadLine();
+
+                    Console.WriteLine("Please enter the trainer's subject");
+                    string Subject = Console.ReadLine();
+
+                    PeopleCert.Trainers.Add(new Trainer(FirstName, LastName, Subject));
+
+                    var LastTrainer = PeopleCert.Trainers.Last();
+                    Console.WriteLine("\n Record added: ");
+                    Console.WriteLine(LastTrainer);
+
+                    Console.WriteLine("\n\nPress enter to continue adding records or 'x' to return to the top menu");
+
+                    if (Console.ReadLine() == "x")
+                    {
+                        ContT = false;
+                        break;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
             }
 
             void AddAssignents()
             {
-                Console.WriteLine("Adding Assignments");
+                bool ContA = true;
+                while (ContA)
+                {
+                    Console.WriteLine("Adding Assignments");
+                    Console.WriteLine("Please enter the title of the Assignment");
+                    string Title = Console.ReadLine();
+
+                    Console.WriteLine("Please enter the description of the Assignment");
+                    string Description = Console.ReadLine();
+
+                    Console.WriteLine("Please enter the Assignment's final submission date");
+                    DateTime SubDateTime = Convert.ToDateTime(Console.ReadLine());
+
+                    Console.WriteLine("Please enter the Assignments oral mark");
+                    int OralMark = Convert.ToInt32(Console.ReadLine());
+
+                    Console.WriteLine("Please enter the Assignments total mark");
+                    int TotalMark = Convert.ToInt32(Console.ReadLine());
+
+                    PeopleCert.Assignments.Add(new Assignment(Title, Description, SubDateTime, OralMark, TotalMark));
+                    var LastAssignment = PeopleCert.Assignments.Last();
+
+                    Console.WriteLine("\n Record added: ");
+                    Console.WriteLine(LastAssignment);
+
+                    Console.WriteLine("\n\nPress enter to continue adding records or 'x' to return to the top menu");
+
+                    if (Console.ReadLine() == "x")
+                    {
+                        ContA = false;
+                        break;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
             }
 
             void AddCourses()
             {
-                Console.WriteLine("Adding Course");
+                bool ContC = true;
+                while (ContC)
+                {
+                    Console.WriteLine("Adding Course");
+
+                    Console.WriteLine("Please enter the title of the Course");
+                    string Title = Console.ReadLine();
+
+                    Console.WriteLine("Please enter the stream of the Course");
+                    string Stream = Console.ReadLine();
+
+                    Console.WriteLine("Please enter the type of the Course");
+                    string Type = Console.ReadLine();
+
+                    Console.WriteLine("Please enter the course's starting date");
+                    DateTime StartDate = Convert.ToDateTime(Console.ReadLine());
+
+                    Console.WriteLine("Please enter teh courese's end date");
+                    DateTime EndDate = Convert.ToDateTime(Console.ReadLine());
+
+                    PeopleCert.Courses.Add(new Course(Title, Stream, Type, StartDate, EndDate));
+
+                    var LastCourse = PeopleCert.Courses.Last();
+
+                    Console.WriteLine("\n Record added: ");
+                    Console.WriteLine(LastCourse);
+
+                    Console.WriteLine("\n\nPress enter to continue adding records or 'x' to return to the top menu");
+
+                    if (Console.ReadLine() == "x")
+                    {
+                        ContC = false;
+                        break;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+
             }
-
         }
-        private static void DeadlineCheck()
-        {
-            Console.WriteLine("DeadLine Check");
-        }
+                private static void DeadlineCheck()
+                {
+                    Console.WriteLine("DeadLine Check");
+                }
 
 
-
-
-
-
-    }
-
+            
+        
+    } 
 }
