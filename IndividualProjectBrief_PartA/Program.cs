@@ -402,33 +402,44 @@ namespace IndividualProjectBrief_PartA
 
         private static void DataPresentation(School PeopleCert)
         {
-            Console.WriteLine("Please select the type of object that you would like to preview");
-
-            Console.WriteLine("Press 1 to view the list of all students");
-            Console.WriteLine("Press 2 to view the list of all trainers");
-            Console.WriteLine("Press 3 to view the list of all assignments");
-            Console.WriteLine("Press 4 to view the list of all courses");
-
-            //Console.WriteLine("Press 5 to view the list of all students per course");
-            //Console.WriteLine("Press 6 to view the list of all assignments per course");
-            //Console.WriteLine("Press 7 to view the list of all assignments per student");
-            //Console.WriteLine("Press 8 to view the list of students that belong to more than one course");
-
-            switch (Console.ReadLine())
+            bool ContPres = true;
+            while (ContPres)
             {
-                case "1":
-                    DataPreview(1);
-                    break;
-                case "2":
-                    DataPreview(2);
-                    break;
-                case "3":
-                    DataPreview(3);
-                    break;
-                case "4":
-                    DataPreview(4);
-                    break;
 
+
+                Console.WriteLine("Please select the type of object that you would like to preview");
+
+                Console.WriteLine("Press 1 to view the list of all students");
+                Console.WriteLine("Press 2 to view the list of all trainers");
+                Console.WriteLine("Press 3 to view the list of all assignments");
+                Console.WriteLine("Press 4 to view the list of all courses");
+
+                //Console.WriteLine("Press 5 to view the list of all students per course");
+                //Console.WriteLine("Press 6 to view the list of all assignments per course");
+                //Console.WriteLine("Press 7 to view the list of all assignments per student");
+                //Console.WriteLine("Press 8 to view the list of students that belong to more than one course");
+
+                Console.WriteLine("Press x to return to the previous menu");
+
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        DataPreview(1);
+                        ContPres = true;
+                        continue;
+                    case "2":
+                        DataPreview(2);
+                        break;
+                    case "3":
+                        DataPreview(3);
+                        break;
+                    case "4":
+                        DataPreview(4);
+                        break;
+                    case "x":
+                        ContPres = false;
+                        break;
+                }
             }
 
             void DataPreview(int n)
@@ -437,30 +448,34 @@ namespace IndividualProjectBrief_PartA
                 {
                     foreach (var i in PeopleCert.Students)
                     {
-                        Console.WriteLine(i);
+                        Console.WriteLine($"-------------------------------------------------------------------------------------------------------- \n{i}");
                     }
                 }
                 else if (n == 2)
                 {
                     foreach (var i in PeopleCert.Trainers)
-                    {
-                        Console.WriteLine(i);
+                    {   
+                        
+                        Console.WriteLine($"-------------------------------------------------------------------------------------------------------- \n{i}");
                     }
                 }
                 else if (n == 3)
                 {
-                    foreach (var i in PeopleCert.Assignments) ;
+                    foreach (var i in PeopleCert.Assignments)
+                    {
+                        Console.WriteLine($"-------------------------------------------------------------------------------------------------------- \n{i}");
+                    }
                 }
                 else if (n == 4)
                 {
-                    foreach (var i in PeopleCert.Courses) ;
+                    foreach (var i in PeopleCert.Courses)
+                    {
+                        Console.WriteLine($"-------------------------------------------------------------------------------------------------------- \n{i}");
+                    }
                 }
                 else Console.WriteLine("No valid option selected");
 
-
-
-
-
+                Console.WriteLine("--------------------------------------------------------------------------------------------------------");
 
             }
 
@@ -494,9 +509,51 @@ namespace IndividualProjectBrief_PartA
             Console.WriteLine("Option '1' Selected - Generating Synthetic Data");
 
             PeopleCert.Students.Add(new Student("George", "Kalokyris", DateTime.Parse("19, 10, 1994"),2000));
+            PeopleCert.Students.Add(new Student("Giannis", "Pantazopoulos", DateTime.Parse("10, 06, 1988"), 2000));
+            PeopleCert.Students.Add(new Student("Olia", "Mourtogianni", DateTime.Parse("07, 08, 1995"), 2000));
+            PeopleCert.Students.Add(new Student("Antonis", "Katsarakis", DateTime.Parse("04, 11, 1994"), 2000));
+            PeopleCert.Students.Add(new Student("Nikos", "Xenakis", DateTime.Parse("18, 04, 1994"), 2000));
+            PeopleCert.Students.Add(new Student("Alex", "Kabroulakis", DateTime.Parse("16, 03, 1993"), 2000));
+            PeopleCert.Students.Add(new Student("Antreas", "Plevrakis", DateTime.Parse("01, 09, 1992"), 2000));
+            PeopleCert.Students.Add(new Student("Anastasia", "Kalokyri", DateTime.Parse("24, 08, 1986"), 2000));
+            PeopleCert.Students.Add(new Student("Agapi", "Kalokyri", DateTime.Parse("16, 02, 1996"), 2000));
+            PeopleCert.Students.Add(new Student("Ilias", "Diamantakos", DateTime.Parse("30, 10, 1990"), 2000));
+            PeopleCert.Students.Add(new Student("Agapi", "Kalokyri", DateTime.Parse("16, 02, 1996"), 2000));
+
+            PeopleCert.Trainers.Add(new Trainer("Michael", "Scott", "Project Management"));
+            PeopleCert.Trainers.Add(new Trainer("Dwight", "Schrute", "Sales Management"));
+            PeopleCert.Trainers.Add(new Trainer("Jim", "Halpert", "Object Oriented Programming"));
+            PeopleCert.Trainers.Add(new Trainer("Creed", "Bratton", "Electronics and TeleCommunication Systems"));
+            PeopleCert.Trainers.Add(new Trainer("Pam", "Beesly", "Computer Graphics"));
+            PeopleCert.Trainers.Add(new Trainer("Darryl", "Philbin", "DBMS Systems"));
+            PeopleCert.Trainers.Add(new Trainer("Stanley", "Hudson", "Operating Systems"));
+            PeopleCert.Trainers.Add(new Trainer("Andy", "Bernard", "Computer Organisation & Architecture"));
+            PeopleCert.Trainers.Add(new Trainer("Kevin", "Malone", "Systems Programming"));
+            PeopleCert.Trainers.Add(new Trainer("Kelly", "Kapoor", "Logic, Discrete Mathematical Structures"));
+
+            PeopleCert.Courses.Add(new Course("Adobe illustrator", "Graphics & Engineering Designing", "Design", DateTime.Parse("26,03,2021"),DateTime.Parse("26,03,2021")));
+            PeopleCert.Courses.Add(new Course("Advanced Administration for Citrix", "Systems Engineering", "Virtual Machines",DateTime.Parse("01,04,2021"),DateTime.Parse("30,09,2021")));
+            PeopleCert.Courses.Add(new Course("Fundamentals of Unix", "Systems Engineering", "Operation Systems", DateTime.Parse("01,04,2021"),DateTime.Parse("30,09,2021")));
+            PeopleCert.Courses.Add(new Course("Microsoft Azure", "MS Engineering", "Cloud Technologies", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
+            PeopleCert.Courses.Add(new Course("Oracle E-Business Suite", "Informatics", "CRM", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
+            PeopleCert.Courses.Add(new Course("Dynamics of Information Security", "Security Engineering", "Security Technologies", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
+            PeopleCert.Courses.Add(new Course("Systems Analysis", "Systems Analysis", "Systems Analytics",DateTime.Parse("01,04,2021"),DateTime.Parse("30,09,2021")));
+            PeopleCert.Courses.Add(new Course("Digital Marketing", "Marketing", "Digital Marketing Engineering",DateTime.Parse("01,04,2021"),DateTime.Parse("30,09,2021")));
+            PeopleCert.Courses.Add(new Course("Office 365", "Infrastructure", "IT Infrastructure", DateTime.Parse("01,04,2021"),DateTime.Parse("30,09,2021")));
+            PeopleCert.Courses.Add(new Course("Advanced Geographic Information Systems", "Information Systems", "Geographic Systems",DateTime.Parse("01,04,2021"),DateTime.Parse("30,09,2021")));
+
+            PeopleCert.Assignments.Add(new Assignment("Gant-Chart", "Project Management", DateTime.Parse("26,03,2021"), 10, 90));
+            PeopleCert.Assignments.Add(new Assignment("Budget Analysis", "Financial analysis of project", DateTime.Parse("26,03,2021"), 70, 30));
+            PeopleCert.Assignments.Add(new Assignment("Class Diagram", "Programs class diagram", DateTime.Parse("26,03,2021"), 10, 90));
+            PeopleCert.Assignments.Add(new Assignment("ERD Diagram", "Database diagram", DateTime.Parse("26,03,2021"), 10, 90));
+            PeopleCert.Assignments.Add(new Assignment("Systems Analysis", "Systems analysis", DateTime.Parse("26,03,2021"), 40, 60));
+            PeopleCert.Assignments.Add(new Assignment("Business Plan", "Presentation of the business plan", DateTime.Parse("26,03,2021"), 70, 30));
+            PeopleCert.Assignments.Add(new Assignment("Bug Analysis", "Work item management - git", DateTime.Parse("26,03,2021"), 0, 100));
+            PeopleCert.Assignments.Add(new Assignment("Software Develpment A", "Software Implementation Part A", DateTime.Parse("26,03,2021"), 0, 100));
+            PeopleCert.Assignments.Add(new Assignment("Software Development B", "Software Implementation", DateTime.Parse("26,03,2021"), 0, 100));
+            PeopleCert.Assignments.Add(new Assignment("QA Testing Methods", "Testing methodologies", DateTime.Parse("26,03,2021"), 0, 100));
 
 
-            
 
 
 
@@ -705,7 +762,7 @@ namespace IndividualProjectBrief_PartA
 
             }
         }
-                private static void DeadlineCheck()
+        private static void DeadlineCheck()
                 {
                     Console.WriteLine("DeadLine Check");
                 }
