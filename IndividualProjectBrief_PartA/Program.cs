@@ -79,11 +79,11 @@ namespace IndividualProjectBrief_PartA
         }
 
         //Each course can have multiple trainers
-        List<Trainer> Trainers = new List<Trainer>();
+        public List<Trainer> Trains = new List<Trainer>();
         //Each course can have multiple students
-        List<Course> Courses = new List<Course>();
+        public List<Student> Studs = new List<Student>();
         //Each course can have multiple assignments
-        List<Assignment> Assignments = new List<Assignment>();
+        public List<Assignment> Assigns = new List<Assignment>();
 
         public Course(string Title, string Stream, string Type, DateTime Start_Date, DateTime End_Date)
         {
@@ -480,8 +480,9 @@ namespace IndividualProjectBrief_PartA
         {
             
             Console.WriteLine("Please select an option to continue");
-            Console.WriteLine("Press 1 to user synthetic data");
+            Console.WriteLine("Press 1 to use synthetic data");
             Console.WriteLine("Press 2 to manually enter data");
+            Console.WriteLine("Press 3 to remove data");
 
             switch (Console.ReadLine())
             {
@@ -500,18 +501,19 @@ namespace IndividualProjectBrief_PartA
 
         private static void SyntheticData(School PeopleCert)
         {
+            Random s = new Random();
             Console.WriteLine("Option '1' Selected - Generating Synthetic Data");
 
-            PeopleCert.Students.Add(new Student("George", "Kalokyris", DateTime.Parse("19, 10, 1994"),2000));
-            PeopleCert.Students.Add(new Student("Giannis", "Pantazopoulos", DateTime.Parse("10, 06, 1988"), 2000));
-            PeopleCert.Students.Add(new Student("Olia", "Mourtogianni", DateTime.Parse("07, 08, 1995"), 2000));
-            PeopleCert.Students.Add(new Student("Antonis", "Katsarakis", DateTime.Parse("04, 11, 1994"), 2000));
-            PeopleCert.Students.Add(new Student("Nikos", "Xenakis", DateTime.Parse("18, 04, 1994"), 2000));
-            PeopleCert.Students.Add(new Student("Alex", "Kabroulakis", DateTime.Parse("16, 03, 1993"), 2000));
-            PeopleCert.Students.Add(new Student("Antreas", "Plevrakis", DateTime.Parse("01, 09, 1992"), 2000));
-            PeopleCert.Students.Add(new Student("Anastasia", "Kalokyri", DateTime.Parse("24, 08, 1986"), 2000));
-            PeopleCert.Students.Add(new Student("Agapi", "Kalokyri", DateTime.Parse("16, 02, 1996"), 2000));
-            PeopleCert.Students.Add(new Student("Ilias", "Diamantakos", DateTime.Parse("30, 10, 1990"), 2000));
+            PeopleCert.Students.Add(new Student("George", "Kal", DateTime.Parse("19, 10, 1994"),s.Next(1000,2000)));
+            PeopleCert.Students.Add(new Student("Giannis", "Pan", DateTime.Parse("10, 06, 1988"), s.Next(1000, 2000)));
+            PeopleCert.Students.Add(new Student("Olia", "Mour", DateTime.Parse("07, 08, 1995"), s.Next(1000, 2000)));
+            PeopleCert.Students.Add(new Student("Antonis", "Kat", DateTime.Parse("04, 11, 1994"), s.Next(1000, 2000)));
+            PeopleCert.Students.Add(new Student("Nikos", "Xen", DateTime.Parse("18, 04, 1994"), s.Next(1000, 2000)));
+            PeopleCert.Students.Add(new Student("Alex", "Kav", DateTime.Parse("16, 03, 1993"), s.Next(1000, 2000)));
+            PeopleCert.Students.Add(new Student("Antreas", "Plev", DateTime.Parse("01, 09, 1992"), s.Next(1000, 2000)));
+            PeopleCert.Students.Add(new Student("Anastasia", "Kalok", DateTime.Parse("24, 08, 1986"), s.Next(1000, 2000)));
+            PeopleCert.Students.Add(new Student("Agapi", "Kalok", DateTime.Parse("16, 02, 1996"), s.Next(1000, 2000)));
+            PeopleCert.Students.Add(new Student("Ilias", "Diam", DateTime.Parse("30, 10, 1990"), s.Next(1000, 2000)));
             
             Console.WriteLine($"\n{PeopleCert.Students.Count} records of Students added successfully!");
 
@@ -554,8 +556,78 @@ namespace IndividualProjectBrief_PartA
 
             Console.WriteLine($"\n{PeopleCert.Assignments.Count} records of Assignments added successfully!");
 
+            Console.WriteLine("---------------------------------------------------------------------------------------------------------");
+
+            
+            //Assigning Students to Courses
+            for (int i = 0; i <= 50; i++)
+            {
+                if (i == 50)
+                {
+                    Console.WriteLine("Assigning Students to Courses: OK");
+                    Console.WriteLine("---------------------------------------------------------------------------------------------------------");
+
+                }
+
+                int CourseRandom = s.Next(0, (PeopleCert.Courses.Count - 1));
+                int StudentRandom = s.Next(0, (PeopleCert.Students.Count - 1));
+
+                bool exists = PeopleCert.Courses[CourseRandom].Studs.Contains(PeopleCert.Students[StudentRandom]);
+
+                if (!exists) //Check if the student exists already in course
+                {
+                    PeopleCert.Courses[CourseRandom].Studs.Add(PeopleCert.Students[StudentRandom]);
+                }
+                else continue;
+                
+            }
+
+            //Assigning Τrainers to Courses
+            for (int i = 0; i <= 50; i++)
+            {
+                if (i == 50)
+                {
+                    Console.WriteLine("Assigning Students to Courses: OK");
+                    Console.WriteLine("---------------------------------------------------------------------------------------------------------");
+
+                }
+
+                int CourseRandom = s.Next(0, (PeopleCert.Courses.Count - 1));
+                int StudentRandom = s.Next(0, (PeopleCert.Students.Count - 1));
+
+                bool exists = PeopleCert.Courses[CourseRandom].Studs.Contains(PeopleCert.Students[StudentRandom]);
+
+                if (!exists) //Check if the student exists already in course
+                {
+                    PeopleCert.Courses[CourseRandom].Studs.Add(PeopleCert.Students[StudentRandom]);
+                }
+                else continue;
+
+            }
 
 
+
+            ////View all of the Students per Course
+            //for (int i = 0; i < PeopleCert.Courses.Count - 1; i++)
+            //{
+            //    Console.WriteLine($"|Course title|: {PeopleCert.Courses[i].Title}");
+
+            //    Console.Write("----------------");
+            //    //Print a line equal to the size of the Course's Title
+            //    for (int l = 0; l < PeopleCert.Courses[i].Title.Length; l++)
+            //    {
+            //        Console.Write("-");
+            //    }
+
+            //    for (int j = 0; j < PeopleCert.Courses[i].Studs.Count; j++)
+            //    {
+
+            //        Console.WriteLine($"\n|Student in course|: {PeopleCert.Courses[i].Studs[j]}");
+
+            //    }
+            //    Console.WriteLine("---------------------------------------------------------------------------------------------------------");
+
+            //}
 
 
         }
