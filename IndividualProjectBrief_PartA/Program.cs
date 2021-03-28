@@ -167,6 +167,7 @@ namespace IndividualProjectBrief_PartA
     class Student
     {
         public List<Assignment> StudAss = new List<Assignment>();
+        public List<Course> StudCourse = new List<Course>();
         //Private fields
         private string _firstName;
 
@@ -345,19 +346,115 @@ namespace IndividualProjectBrief_PartA
         public List<Assignment> Assignments = new List<Assignment>();
 
         public List<Course> Courses = new List<Course>();
-       
     }
+
+    class Manager
+    {
+        private readonly School _school;
+
+        public Manager(School school)
+        {
+            this._school = school;
+        }
+
+
+        public bool AddStudentToCourse(Student student, Course course)
+        {
+            if (course.Studs.Contains(student))
+            {
+                return false;
+            }
+            course.Studs.Add(student);
+            student.StudAss.AddRange(course.Assigns); //All of the assignemnts of the course assigned to the student
+            student.StudCourse.Add(course);
+            return true;
+        }
+        //Trainers per courses
+        public bool AddTrainerToCourse(Trainer trainer, Course course)
+        {
+            if (course.Trains.Contains(trainer))
+            {
+                return false;
+            }
+            course.Trains.Add(trainer);
+            return true;
+        }
+
+        public bool AddAssignmentToCourse(Assignment assignment, Course course)
+        {
+            if (_school.Assignments.Contains(assignment))
+            {
+                return false;   
+            }
+            _school.Assignments.Add(assignment);
+
+            course.Assigns.Add(assignment);
+            foreach(var student in course.Studs)
+            {
+                student.StudAss.Add(assignment); //All of the assignments of the course assigned to the student
+            }
+            return true;
+
+        }
+
+        
+        public void AddStudent(Student student)
+        {
+            if (!_school.Students.Contains(student))
+            {
+                _school.Students.Add(student);
+            }
+        }
+
+        public void AddCourse(Course course)
+        {
+            if (!_school.Courses.Contains(course))
+            {
+                _school.Courses.Add(course);
+            }
+        }
+
+        public void AddTrainers(Trainer trainer)
+        {
+            if (!_school.Trainers.Contains(trainer))
+            {
+                _school.Trainers.Add(trainer);
+            }
+        }
+
+        public IEnumerable<Student> GetStudentDue(DateTime date, out DateTime start, out DateTime end)
+        {
+            end = date;
+            start = date;
+
+            while (start.DayOfWeek != DayOfWeek.Monday)
+            {
+                start = start.AddDays(-1);
+            }
+
+            while (end.DayOfWeek != DayOfWeek.Friday)
+            {
+                end = end.AddDays(1);
+            }
+
+
+            DateTime from = start, to = end;
+            return _school.Students.Where(x => x.StudAss.Any(f => f.SubDateTime >= from && f.SubDateTime <= to));
+        }
+    }
+
 
     class Program
     {
-
+        private static School school = new School();
+        private static Manager manager = new Manager(school);
         static void Main(string[] args)
-        {
+        {          
 
-            School PeopleCert = new School();
-
+            
 
             Console.WriteLine("Welcome to Peoplecert's Student System");
+
 
             
             bool ContM = true;
@@ -374,10 +471,10 @@ namespace IndividualProjectBrief_PartA
                 switch (Console.ReadLine())
                 {
                     case "1":
-                        DataManipulation(PeopleCert);
+                        DataManipulation();
                         break;
                     case "2":
-                        DataPresentation(PeopleCert);
+                        DataPresentation();
                         break;
                     case "3":
                         DeadlineCheck();
@@ -386,7 +483,6 @@ namespace IndividualProjectBrief_PartA
                         Console.WriteLine("Thank you for using the Student System");
                         ContM = false;
                         break;
-                        Console.ReadKey();
                     default:
                         continue;
                 }
@@ -395,7 +491,7 @@ namespace IndividualProjectBrief_PartA
 
 
 
-        private static void DataPresentation(School PeopleCert)
+        internal static void DataPresentation()
         {
             bool ContPres = true;
             while (ContPres)
@@ -452,174 +548,147 @@ namespace IndividualProjectBrief_PartA
                 }
             }
 
-            void DataPreview(int n)
-            {
-                if (n == 1)
-                {
-                    foreach (var i in PeopleCert.Students)
-                    {
-                        Console.WriteLine($"-------------------------------------------------------------------------------------------------------- \n{i}");
-                    }
-                }
-                else if (n == 2)
-                {
-                    foreach (var i in PeopleCert.Trainers)
-                    {
-
-                        Console.WriteLine($"-------------------------------------------------------------------------------------------------------- \n{i}");
-                    }
-                }
-                else if (n == 3)
-                {
-                    foreach (var i in PeopleCert.Assignments)
-                    {
-                        Console.WriteLine($"-------------------------------------------------------------------------------------------------------- \n{i}");
-                    }
-                }
-                else if (n == 4)
-                {
-                    foreach (var i in PeopleCert.Courses)
-                    {
-                        Console.WriteLine($"-------------------------------------------------------------------------------------------------------- \n{i}");
-                    }
-                }
-                else if (n == 5)
-                {
-                    //View all of the Students per Course
-                    for (int i = 0; i < PeopleCert.Courses.Count; i++)
-                    {
-                        Console.WriteLine($"|Course title|: {PeopleCert.Courses[i].Title}");
-
-                        Console.Write("----------------");
-                        //Print a line equal to the size of the Course's Title
-                        for (int l = 0; l < PeopleCert.Courses[i].Title.Length; l++)
-                        {
-                            Console.Write("-");
-                        }
-
-                        for (int j = 0; j < PeopleCert.Courses[i].Studs.Count; j++)
-                        {
-
-                            Console.WriteLine($"\n|Student in course|: {PeopleCert.Courses[i].Studs[j]}");
-
-                        }
-                        Console.WriteLine("---------------------------------------------------------------------------------------------------------");
-                    }
-                }
-                else if (n == 6)
-                {
-                    //View all of the Trainers per Course
-                    for (int i = 0; i < PeopleCert.Courses.Count; i++)
-                    {
-                        Console.WriteLine($"|Course title|: {PeopleCert.Courses[i].Title}");
-
-                        Console.Write("----------------");
-                        //Print a line equal to the size of the Course's Title
-                        for (int l = 0; l < PeopleCert.Courses[i].Title.Length; l++)
-                        {
-                            Console.Write("-");
-                        }
-
-                        for (int j = 0; j < PeopleCert.Courses[i].Trains.Count; j++)
-                        {
-
-                            Console.WriteLine($"\n|Trainer in course|: {PeopleCert.Courses[i].Trains[j]}");
-
-                        }
-                        Console.WriteLine("--------------------------------------------------------------------------------------------------------");
-                    }
-
-                }
-                else if (n == 7)
-                {
-                    //View all of the Assignments per Course
-                    for (int i = 0; i < PeopleCert.Courses.Count; i++)
-                    {
-                        Console.WriteLine($"|Course title|: {PeopleCert.Courses[i].Title}");
-
-                        Console.Write("----------------");
-                        //Print a line equal to the size of the Course's Title
-                        for (int l = 0; l < PeopleCert.Courses[i].Title.Length; l++)
-                        {
-                            Console.Write("-");
-                        }
-
-                        for (int j = 0; j < PeopleCert.Courses[i].Assigns.Count; j++)
-                        {
-
-                            Console.WriteLine($"\n|Assignment in course|: {PeopleCert.Courses[i].Assigns[j]}");
-
-                        }
-                        Console.WriteLine("--------------------------------------------------------------------------------------------------------");
-
-                    }
-                }
-                else if (n == 8)
-                {
-
-                    //View all of the assignments per student
-                    for (int i = 0; i < PeopleCert.Students.Count; i++) //Loop through the Students
-                    {
-                        Console.WriteLine("-----------------------------------------------------------------------------------------------------------------");
-                        Console.WriteLine($"|Student|: {PeopleCert.Students[i]}");
-                        Console.WriteLine("-----------------------------------------------------------------------------------------------------------------");
-
-                        for (int j = 0; j < PeopleCert.Students[i].StudAss.Count; j++)
-                        {
-                            Console.WriteLine($"|Assignment|:{PeopleCert.Students[i].StudAss[j]}");
-                        }
-                    }
-
-                }
-                else if (n == 9)
-                {
-
-                    //View all of students that are assigned to more than one course
-                    for (int i = 0; i < PeopleCert.Students.Count; i++) //Loop through the Students
-                    {
-                        int x = 0;
-                        List <Student> StudCourse = new List<Student>();
-
-                        for (int j = 0; j < PeopleCert.Courses.Count; j++)
-                        {
-                            if (PeopleCert.Students.Contains(PeopleCert.Courses[j].Studs[i]))
-                            {
-                                x++;
-                            }
-                        }
-
-                        if (x > 1)
-                            { //Student is in X courses
-                                StudCourse.Add(PeopleCert.Students[i]);
-                            }
-                        
-
-                        foreach(var s in StudCourse)
-                        {
-                            Console.WriteLine(s);
-                        }
-
-                      
-                    }
-
-
-                }
-
-                else Console.WriteLine("No valid option selected");
-
-                Console.WriteLine("--------------------------------------------------------------------------------------------------------------------------");
-            }
-
-
-            void DependenciesView()
-            {
-
-            }
 
 
         }
+        static void DataPreview(int n)
+        {
+            if (n == 1)
+            {
+                foreach (var i in school.Students)
+                {
+                    Console.WriteLine($"-------------------------------------------------------------------------------------------------------- \n{school.Students.IndexOf(i)}.{i}");
+                }
+            }
+            else if (n == 2)
+            {
+                foreach (var i in school.Trainers)
+                {
 
-        private static void DataManipulation(School PeopleCert)
+                    Console.WriteLine($"-------------------------------------------------------------------------------------------------------- \n{school.Trainers.IndexOf(i)}.{i}");
+                }
+            }
+            else if (n == 3)
+            {
+                foreach (var i in school.Assignments)
+                {
+                    Console.WriteLine($"-------------------------------------------------------------------------------------------------------- \n{school.Assignments.IndexOf(i)}.{i}");
+                }
+            }
+            else if (n == 4)
+            {
+                foreach (var i in school.Courses)
+                {
+                    Console.WriteLine($"-------------------------------------------------------------------------------------------------------- \n{school.Courses.IndexOf(i)}.{i}");
+                }
+            }
+            else if (n == 5)
+            {
+                //View all of the Students per Course
+                for (int i = 0; i < school.Courses.Count; i++)
+                {
+                    Console.WriteLine($"|Course title|: {school.Courses[i].Title}");
+
+                    Console.Write("----------------");
+                    //Print a line equal to the size of the Course's Title
+                    for (int l = 0; l < school.Courses[i].Title.Length; l++)
+                    {
+                        Console.Write("-");
+                    }
+
+                    for (int j = 0; j < school.Courses[i].Studs.Count; j++)
+                    {
+
+                        Console.WriteLine($"\n|Student in course|: {school.Courses[i].Studs[j]}");
+
+                    }
+                    Console.WriteLine("---------------------------------------------------------------------------------------------------------");
+                }
+            }
+            else if (n == 6)
+            {
+                //View all of the Trainers per Course
+                for (int i = 0; i < school.Courses.Count; i++)
+                {
+                    Console.WriteLine($"|Course title|: {school.Courses[i].Title}");
+
+                    Console.Write("----------------");
+                    //Print a line equal to the size of the Course's Title
+                    for (int l = 0; l < school.Courses[i].Title.Length; l++)
+                    {
+                        Console.Write("-");
+                    }
+
+                    for (int j = 0; j < school.Courses[i].Trains.Count; j++)
+                    {
+
+                        Console.WriteLine($"\n|Trainer in course|: {school.Courses[i].Trains[j]}");
+
+                    }
+                    Console.WriteLine("--------------------------------------------------------------------------------------------------------");
+                }
+
+            }
+            else if (n == 7)
+            {
+                //View all of the Assignments per Course
+                for (int i = 0; i < school.Courses.Count; i++)
+                {
+                    Console.WriteLine($"|Course title|: {school.Courses[i].Title}");
+
+                    Console.Write("----------------");
+                    //Print a line equal to the size of the Course's Title
+                    for (int l = 0; l < school.Courses[i].Title.Length; l++)
+                    {
+                        Console.Write("-");
+                    }
+
+                    for (int j = 0; j < school.Courses[i].Assigns.Count; j++)
+                    {
+
+                        Console.WriteLine($"\n|Assignment in course|: {school.Courses[i].Assigns[j]}");
+
+                    }
+                    Console.WriteLine("--------------------------------------------------------------------------------------------------------");
+
+                }
+            }
+            else if (n == 8)
+            {
+
+                //View all of the assignments per student
+                for (int i = 0; i < school.Students.Count; i++) //Loop through the Students
+                {
+                    Console.WriteLine("-----------------------------------------------------------------------------------------------------------------");
+                    Console.WriteLine($"|Student|: {school.Students[i]}");
+                    Console.WriteLine("-----------------------------------------------------------------------------------------------------------------");
+
+                    for (int j = 0; j < school.Students[i].StudAss.Count; j++)
+                    {
+                        Console.WriteLine($"|Assignment|:{school.Students[i].StudAss[j]}");
+                    }
+                }
+
+            }
+            else if (n == 9)
+            {    //View all of students that are assigned to more than one course
+
+                var students = school.Students.Where(x => x.StudCourse.Count > 1);
+                Console.WriteLine("\t\tStudents that are assigned to more than once course");
+                foreach(var student in students)
+                {
+                    Console.WriteLine($"|Student|:{student}");
+                }
+
+            }
+
+            else Console.WriteLine("No valid option selected");
+
+            Console.WriteLine("--------------------------------------------------------------------------------------------------------------------------");
+        }
+
+
+        private static void DataManipulation()
         {
             
             Console.WriteLine("Please select an option to continue");
@@ -630,10 +699,10 @@ namespace IndividualProjectBrief_PartA
             switch (Console.ReadLine())
             {
                 case "1":
-                    SyntheticData(PeopleCert);
+                    SyntheticData();
                     break;
                 case "2":
-                    ManualData(PeopleCert);
+                    ManualData();
                     break;
                 default:
                     Console.WriteLine("default");
@@ -642,156 +711,112 @@ namespace IndividualProjectBrief_PartA
 
         }
 
-        private static void SyntheticData(School PeopleCert)
+        private static void SyntheticData()
         {
-            Random s = new Random();
+            var s = new Random();
             Console.WriteLine("Option '1' Selected - Generating Synthetic Data");
+            //manager.AddStudent(new Student("George", "Kal", new DateTime(1994,10,19) ,s.Next(1000,2000)));  //TODO:DateTime replace
+            manager.AddStudent(new Student("George", "Kal", new DateTime(1994, 10, 19), s.Next(1000, 2000)));
+            manager.AddStudent(new Student("Giannis", "Pan", DateTime.Parse("10, 06, 1988"), s.Next(1000, 2000)));
+            manager.AddStudent(new Student("Olia", "Mour", DateTime.Parse("07, 08, 1995"), s.Next(1000, 2000)));
+            manager.AddStudent(new Student("Antonis", "Kat", DateTime.Parse("04, 11, 1994"), s.Next(1000, 2000)));
+            manager.AddStudent(new Student("Nikos", "Xen", DateTime.Parse("18, 04, 1994"), s.Next(1000, 2000)));
+            manager.AddStudent(new Student("Alex", "Kav", DateTime.Parse("16, 03, 1993"), s.Next(1000, 2000)));
+            manager.AddStudent(new Student("Antreas", "Plev", DateTime.Parse("01, 09, 1992"), s.Next(1000, 2000)));
+            manager.AddStudent(new Student("Anastasia", "Kalok", DateTime.Parse("24, 08, 1986"), s.Next(1000, 2000)));
+            manager.AddStudent(new Student("Agapi", "Kalok", DateTime.Parse("16, 02, 1996"), s.Next(1000, 2000)));
+            manager.AddStudent(new Student("Ilias", "Diam", DateTime.Parse("30, 10, 1990"), s.Next(1000, 2000)));
 
-            PeopleCert.Students.Add(new Student("George", "Kal", DateTime.Parse("19, 10, 1994"),s.Next(1000,2000)));
-            PeopleCert.Students.Add(new Student("Giannis", "Pan", DateTime.Parse("10, 06, 1988"), s.Next(1000, 2000)));
-            PeopleCert.Students.Add(new Student("Olia", "Mour", DateTime.Parse("07, 08, 1995"), s.Next(1000, 2000)));
-            PeopleCert.Students.Add(new Student("Antonis", "Kat", DateTime.Parse("04, 11, 1994"), s.Next(1000, 2000)));
-            PeopleCert.Students.Add(new Student("Nikos", "Xen", DateTime.Parse("18, 04, 1994"), s.Next(1000, 2000)));
-            PeopleCert.Students.Add(new Student("Alex", "Kav", DateTime.Parse("16, 03, 1993"), s.Next(1000, 2000)));
-            PeopleCert.Students.Add(new Student("Antreas", "Plev", DateTime.Parse("01, 09, 1992"), s.Next(1000, 2000)));
-            PeopleCert.Students.Add(new Student("Anastasia", "Kalok", DateTime.Parse("24, 08, 1986"), s.Next(1000, 2000)));
-            PeopleCert.Students.Add(new Student("Agapi", "Kalok", DateTime.Parse("16, 02, 1996"), s.Next(1000, 2000)));
-            PeopleCert.Students.Add(new Student("Ilias", "Diam", DateTime.Parse("30, 10, 1990"), s.Next(1000, 2000)));
+            Console.WriteLine($"\n{school.Students.Count} records of Students added successfully!");
 
-            Console.WriteLine($"\n{PeopleCert.Students.Count} records of Students added successfully!");
+            manager.AddTrainers(new Trainer("Michael", "Scott", "Project Management"));
+            manager.AddTrainers(new Trainer("Dwight", "Schrute", "Sales Management"));
+            manager.AddTrainers(new Trainer("Jim", "Halpert", "Object Oriented Programming"));
+            manager.AddTrainers(new Trainer("Creed", "Bratton", "Electronics and TeleCommunication Systems"));
+            manager.AddTrainers(new Trainer("Pam", "Beesly", "Computer Graphics"));
+            manager.AddTrainers(new Trainer("Darryl", "Philbin", "DBMS Systems"));
+            manager.AddTrainers(new Trainer("Stanley", "Hudson", "Operating Systems"));
+            manager.AddTrainers(new Trainer("Andy", "Bernard", "Computer Organisation & Architecture"));
+            manager.AddTrainers(new Trainer("Kevin", "Malone", "Systems Programming"));
+            manager.AddTrainers(new Trainer("Kelly", "Kapoor", "Logic, Discrete Mathematical Structures"));
 
-            PeopleCert.Trainers.Add(new Trainer("Michael", "Scott", "Project Management"));
-            PeopleCert.Trainers.Add(new Trainer("Dwight", "Schrute", "Sales Management"));
-            PeopleCert.Trainers.Add(new Trainer("Jim", "Halpert", "Object Oriented Programming"));
-            PeopleCert.Trainers.Add(new Trainer("Creed", "Bratton", "Electronics and TeleCommunication Systems"));
-            PeopleCert.Trainers.Add(new Trainer("Pam", "Beesly", "Computer Graphics"));
-            PeopleCert.Trainers.Add(new Trainer("Darryl", "Philbin", "DBMS Systems"));
-            PeopleCert.Trainers.Add(new Trainer("Stanley", "Hudson", "Operating Systems"));
-            PeopleCert.Trainers.Add(new Trainer("Andy", "Bernard", "Computer Organisation & Architecture"));
-            PeopleCert.Trainers.Add(new Trainer("Kevin", "Malone", "Systems Programming"));
-            PeopleCert.Trainers.Add(new Trainer("Kelly", "Kapoor", "Logic, Discrete Mathematical Structures"));
+            Console.WriteLine($"\n{school.Trainers.Count} records of Trainers added successfully!");
 
-            Console.WriteLine($"\n{PeopleCert.Trainers.Count} records of Trainers added successfully!");
+            manager.AddCourse(new Course("Adobe illustrator", "Graphics & Engineering Designing", "Design", DateTime.Parse("26,03,2021"),DateTime.Parse("26,03,2021")));
+            manager.AddCourse(new Course("Advanced Administration for Citrix", "Systems Engineering", "Virtual Machines",DateTime.Parse("01,04,2021"),DateTime.Parse("30,09,2021")));
+            manager.AddCourse(new Course("Fundamentals of Unix", "Systems Engineering", "Operation Systems", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
+            manager.AddCourse(new Course("Microsoft Azure", "MS Engineering", "Cloud Technologies", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
+            manager.AddCourse(new Course("Oracle E-Business Suite", "Informatics", "CRM", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
+            manager.AddCourse(new Course("Dynamics of Information Security", "Security Engineering", "Security Technologies", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
+            manager.AddCourse(new Course("Systems Analysis", "Systems Analysis", "Systems Analytics", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
+            manager.AddCourse(new Course("Digital Marketing", "Marketing", "Digital Marketing Engineering", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
+            manager.AddCourse(new Course("Office 365", "Infrastructure", "IT Infrastructure", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
+            manager.AddCourse(new Course("Advanced Geographic Information Systems", "Information Systems", "Geographic Systems", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
 
-            PeopleCert.Courses.Add(new Course("Adobe illustrator", "Graphics & Engineering Designing", "Design", DateTime.Parse("26,03,2021"),DateTime.Parse("26,03,2021")));
-            PeopleCert.Courses.Add(new Course("Advanced Administration for Citrix", "Systems Engineering", "Virtual Machines",DateTime.Parse("01,04,2021"),DateTime.Parse("30,09,2021")));
-            PeopleCert.Courses.Add(new Course("Fundamentals of Unix", "Systems Engineering", "Operation Systems", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
-            PeopleCert.Courses.Add(new Course("Microsoft Azure", "MS Engineering", "Cloud Technologies", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
-            PeopleCert.Courses.Add(new Course("Oracle E-Business Suite", "Informatics", "CRM", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
-            PeopleCert.Courses.Add(new Course("Dynamics of Information Security", "Security Engineering", "Security Technologies", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
-            PeopleCert.Courses.Add(new Course("Systems Analysis", "Systems Analysis", "Systems Analytics", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
-            PeopleCert.Courses.Add(new Course("Digital Marketing", "Marketing", "Digital Marketing Engineering", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
-            PeopleCert.Courses.Add(new Course("Office 365", "Infrastructure", "IT Infrastructure", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
-            PeopleCert.Courses.Add(new Course("Advanced Geographic Information Systems", "Information Systems", "Geographic Systems", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
+            Console.WriteLine($"\n{school.Courses.Count} records of Courses added successfully!");
 
-            Console.WriteLine($"\n{PeopleCert.Courses.Count} records of Courses added successfully!");
+            manager.AddAssignmentToCourse(new Assignment("Gant-Chart", "Project Management", DateTime.Parse("26,03,2021"), 10, 90), school.Courses[s.Next(0, school.Courses.Count-1)]);
+            manager.AddAssignmentToCourse(new Assignment("Budget Analysis", "Financial analysis of project", DateTime.Parse("26,03,2021"), 70, 30), school.Courses[s.Next(0, school.Courses.Count - 1)]);
+            manager.AddAssignmentToCourse(new Assignment("Class Diagram", "Programs class diagram", DateTime.Parse("26,03,2021"), 10, 90), school.Courses[s.Next(0, school.Courses.Count - 1)]);
+            manager.AddAssignmentToCourse(new Assignment("ERD Diagram", "Database diagram", DateTime.Parse("26,03,2021"), 10, 90), school.Courses[s.Next(0, school.Courses.Count - 1)]);
+            manager.AddAssignmentToCourse(new Assignment("Systems Analysis", "Systems analysis", DateTime.Parse("26,03,2021"), 40, 60), school.Courses[s.Next(0, school.Courses.Count - 1)]);
+            manager.AddAssignmentToCourse(new Assignment("Business Plan", "Presentation of the business plan", DateTime.Parse("26,03,2021"), 70, 30), school.Courses[s.Next(0, school.Courses.Count - 1)]);
+            manager.AddAssignmentToCourse(new Assignment("Bug Analysis", "Work item management - git", DateTime.Parse("26,03,2021"), 0, 100), school.Courses[s.Next(0, school.Courses.Count - 1)]);
+            manager.AddAssignmentToCourse(new Assignment("Software Develpment A", "Software Implementation Part A", DateTime.Parse("26,03,2021"), 0, 100), school.Courses[s.Next(0, school.Courses.Count - 1)]);
+            manager.AddAssignmentToCourse(new Assignment("Software Development B", "Software Implementation", DateTime.Parse("26,03,2021"), 0, 100), school.Courses[s.Next(0, school.Courses.Count - 1)]);
+            manager.AddAssignmentToCourse(new Assignment("QA Testing Methods", "Testing methodologies", DateTime.Parse("26,03,2021"), 0, 100), school.Courses[s.Next(0, school.Courses.Count - 1)]);
 
-            PeopleCert.Assignments.Add(new Assignment("Gant-Chart", "Project Management", DateTime.Parse("26,03,2021"), 10, 90));
-            PeopleCert.Assignments.Add(new Assignment("Budget Analysis", "Financial analysis of project", DateTime.Parse("26,03,2021"), 70, 30));
-            PeopleCert.Assignments.Add(new Assignment("Class Diagram", "Programs class diagram", DateTime.Parse("26,03,2021"), 10, 90));
-            PeopleCert.Assignments.Add(new Assignment("ERD Diagram", "Database diagram", DateTime.Parse("26,03,2021"), 10, 90));
-            PeopleCert.Assignments.Add(new Assignment("Systems Analysis", "Systems analysis", DateTime.Parse("26,03,2021"), 40, 60));
-            PeopleCert.Assignments.Add(new Assignment("Business Plan", "Presentation of the business plan", DateTime.Parse("26,03,2021"), 70, 30));
-            PeopleCert.Assignments.Add(new Assignment("Bug Analysis", "Work item management - git", DateTime.Parse("26,03,2021"), 0, 100));
-            PeopleCert.Assignments.Add(new Assignment("Software Develpment A", "Software Implementation Part A", DateTime.Parse("26,03,2021"), 0, 100));
-            PeopleCert.Assignments.Add(new Assignment("Software Development B", "Software Implementation", DateTime.Parse("26,03,2021"), 0, 100));
-            PeopleCert.Assignments.Add(new Assignment("QA Testing Methods", "Testing methodologies", DateTime.Parse("26,03,2021"), 0, 100));
+            Console.WriteLine($"\n{school.Assignments.Count} records of Assignments added successfully!");
 
-            Console.WriteLine($"\n{PeopleCert.Assignments.Count} records of Assignments added successfully!");
+
 
             Console.WriteLine("---------------------------------------------------------------------------------------------------------");
+            Console.WriteLine("Assigning Assignments to Courses: OK");
+            Console.WriteLine("---------------------------------------------------------------------------------------------------------");
 
-            
             //Assigning Students to Courses
             for (int i = 0; i <= 50; i++)
             {
-                if (i == 50)
-                {
-                    Console.WriteLine("Assigning Students to Courses: OK");
-                    Console.WriteLine("---------------------------------------------------------------------------------------------------------");
-                }
+                
 
-                int CourseRandom = s.Next(0, (PeopleCert.Courses.Count - 1));
-                int StudentRandom = s.Next(0, (PeopleCert.Students.Count - 1));
+                int courseRandom = s.Next(0, (school.Courses.Count - 1));
+                int StudentRandom = s.Next(0, (school.Students.Count - 1));
 
-                bool exists = PeopleCert.Courses[CourseRandom].Studs.Contains(PeopleCert.Students[StudentRandom]);
+                var course = school.Courses[courseRandom];
+                var student = school.Students[StudentRandom];
 
-                if (!exists) //Check if the student exists already in course
-                {
-                    PeopleCert.Courses[CourseRandom].Studs.Add(PeopleCert.Students[StudentRandom]);
-                }
-                else continue;
+
+                manager.AddStudentToCourse(student, course);
    
             }
 
+            Console.WriteLine("Assigning Students to Courses: OK");
+            Console.WriteLine("---------------------------------------------------------------------------------------------------------");
+
             //Assigning Τrainers to Courses
-            for (int i = 0; i <= 50; i++)
+            for (int i = 0; i < 50; i++)
             {
-                if (i == 50)
-                {
-                    Console.WriteLine("Assigning Trainers to Courses: OK");
-                    Console.WriteLine("---------------------------------------------------------------------------------------------------------");
-                }
+              
 
-                int CourseRandom = s.Next(0, (PeopleCert.Courses.Count - 1));
-                int TrainerRandom = s.Next(0, (PeopleCert.Trainers.Count - 1));
+                int CourseRandom = s.Next(0, (school.Courses.Count - 1));
+                int TrainerRandom = s.Next(0, (school.Trainers.Count - 1));
 
-                bool exists = PeopleCert.Courses[CourseRandom].Trains.Contains(PeopleCert.Trainers[TrainerRandom]);
+                var course = school.Courses[CourseRandom];
+                var trainer = school.Trainers[TrainerRandom];
 
-                if (!exists && (PeopleCert.Courses[CourseRandom].Trains.Count < 2)) //Check if the trainer exists already in course. If it doesn't exist and the course has less than 2 trainers add it
+                if (course.Trains.Count < 2) //Check if the trainer exists already in course. If it doesn't exist and the course has less than 3 trainers add it
                 {
 
-                    PeopleCert.Courses[CourseRandom].Trains.Add(PeopleCert.Trainers[TrainerRandom]);
+                    manager.AddTrainerToCourse(trainer, course);
 
-                }
-                else continue;
-            }
-
-            //Assigning Assignments to Courses
-            for (int i = 0; i <= 50; i++)
-            {
-                if (i == 50)
-                {
-                    Console.WriteLine("Assigning Assignments to Courses: OK");
-                    Console.WriteLine("---------------------------------------------------------------------------------------------------------");
-                }
-
-                int CourseRandom = s.Next(0, (PeopleCert.Courses.Count - 1));
-                int AssRandom = s.Next(0, (PeopleCert.Assignments.Count - 1));
-
-                bool exists = PeopleCert.Courses[CourseRandom].Assigns.Contains(PeopleCert.Assignments[AssRandom]);
-
-                if (!exists && PeopleCert.Courses[CourseRandom].Assigns.Count < 2) //Check if the assignment exists already in course and that no more than 2 assignments are associated to the course
-                {
-                    PeopleCert.Courses[CourseRandom].Assigns.Add(PeopleCert.Assignments[AssRandom]);
-                }
-                else continue;
-
-            }
-
-            //Add assignment to the assignment list in student
-            //It is possible for a student to have a duplicate assignment due to the assignment's relation to more than one course
-            for (int i = 0; i < (PeopleCert.Students.Count); i++) //Loop through the Students
-            {
-
-                for (int j = 0; j < (PeopleCert.Courses.Count); j++) //Loop through the Courses 
-                {
-                    if (PeopleCert.Courses[j].Studs.Contains(PeopleCert.Students[i])) //If the students is undertaking a course 
-                    {
-                        for (int k = 0; k < (PeopleCert.Courses[j].Assigns.Count); k++) //Loop through the Assignments of that course
-
-                        {
-                            PeopleCert.Students[i].StudAss.Add(PeopleCert.Courses[j].Assigns[k]); //Assign the assignments of that course to the 
-                        }
-
-                    }
                 }
             }
-
-
+            Console.WriteLine("Assigning Trainers to Courses: OK");
+            Console.WriteLine("---------------------------------------------------------------------------------------------------------");          
 
         }
-        private static void ManualData(School PeopleCert)
+
+        private static void ManualData()
         {
             Console.WriteLine("Option '2' Selected - Manual Data Input");
             bool ContM2 = true;
@@ -850,12 +875,11 @@ namespace IndividualProjectBrief_PartA
                     Console.WriteLine("Please enter the amount of the total tuitionFees");
                     int Fees = int.Parse(Console.ReadLine());
 
+                    var student = new Student(FirstName, LastName, DateOfBirth, Fees);
+                    manager.AddStudent(student);
 
-                    PeopleCert.Students.Add(new Student(FirstName, LastName, DateOfBirth, Fees));
-
-                    var LastStudent = PeopleCert.Students.Last();
                     Console.WriteLine("\nRecord added: ");
-                    Console.WriteLine(LastStudent);
+                    Console.WriteLine(student);
 
                     Console.WriteLine("\n\nPress enter to continue adding records or 'x' to return to the top menu");
 
@@ -869,7 +893,6 @@ namespace IndividualProjectBrief_PartA
                         continue;
                     }
                 }
-
 
             }
 
@@ -889,11 +912,14 @@ namespace IndividualProjectBrief_PartA
                     Console.WriteLine("Please enter the trainer's subject");
                     string Subject = Console.ReadLine();
 
-                    PeopleCert.Trainers.Add(new Trainer(FirstName, LastName, Subject));
+                    var trainer = new Trainer(FirstName, LastName, Subject);
+                    manager.AddTrainers(trainer);
 
-                    var LastTrainer = PeopleCert.Trainers.Last();
+                    Course course = PickCourseOptions();
+
+                    manager.AddTrainerToCourse(trainer, course);
                     Console.WriteLine("\n Record added: ");
-                    Console.WriteLine(LastTrainer);
+                    Console.WriteLine(trainer);
 
                     Console.WriteLine("\n\nPress enter to continue adding records or 'x' to return to the top menu");
 
@@ -930,11 +956,18 @@ namespace IndividualProjectBrief_PartA
                     Console.WriteLine("Please enter the Assignments total mark");
                     int TotalMark = Convert.ToInt32(Console.ReadLine());
 
-                    PeopleCert.Assignments.Add(new Assignment(Title, Description, SubDateTime, OralMark, TotalMark));
-                    var LastAssignment = PeopleCert.Assignments.Last();
+                    Course course = PickCourseOptions();
 
-                    Console.WriteLine("\n Record added: ");
-                    Console.WriteLine(LastAssignment);
+                    var assignment = new Assignment(Title, Description, SubDateTime, OralMark, TotalMark);
+                    if (manager.AddAssignmentToCourse(assignment, course))
+                    {
+                        Console.WriteLine($"\n Record added: {assignment} to course {course}");
+                        Console.WriteLine();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Assignment is already in course");
+                    }
 
                     Console.WriteLine("\n\nPress enter to continue adding records or 'x' to return to the top menu");
 
@@ -972,12 +1005,12 @@ namespace IndividualProjectBrief_PartA
                     Console.WriteLine("Please enter teh courese's end date");
                     DateTime EndDate = Convert.ToDateTime(Console.ReadLine());
 
-                    PeopleCert.Courses.Add(new Course(Title, Stream, Type, StartDate, EndDate));
+                    var newcourse = new Course(Title, Stream, Type, StartDate, EndDate);
 
-                    var LastCourse = PeopleCert.Courses.Last();
+                    manager.AddCourse(newcourse);
 
                     Console.WriteLine("\n Record added: ");
-                    Console.WriteLine(LastCourse);
+                    Console.WriteLine(newcourse);
 
                     Console.WriteLine("\n\nPress enter to continue adding records or 'x' to return to the top menu");
 
@@ -994,13 +1027,39 @@ namespace IndividualProjectBrief_PartA
 
             }
         }
-        private static void DeadlineCheck()
-                {
-                    Console.WriteLine("DeadLine Check");
-                }
 
-
+        private static Course PickCourseOptions()
+        {
             
-        
-    } 
+            DataPreview(4);
+            Console.WriteLine("Please select a course to assign the assignment to");
+            int indcourse = int.Parse(Console.ReadLine());
+            var course = school.Courses[indcourse];
+            return course;
+        }
+
+        private static void DeadlineCheck()
+        {
+            Console.WriteLine("Please provide a date to check");
+            DateTime date = DateTime.Parse(Console.ReadLine());
+            
+            var students = manager.GetStudentDue(date, out var start, out var end);
+
+            if (students.Any()) //Check if there is at least one student
+            {
+                Console.WriteLine($"\nList of students from week commencing: {start.ToShortDateString()} to {end.ToShortDateString()}");
+
+                foreach (var student in students)
+                {
+                    Console.WriteLine(student);
+                }
+            }
+            else
+            {
+                Console.WriteLine($"No students are due to submit an assignment from {start.ToShortDateString()} to {end.ToShortDateString()}" );
+            }
+
+        }
+    }
+    
 }
