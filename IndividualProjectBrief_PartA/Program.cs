@@ -1,462 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace IndividualProjectBrief_PartA
 {
-    class Course
-    {
-        //Private fields
-        private string _title;
-
-        private string _stream;
-
-        private string _type;
-
-        private DateTime _start_date;
-
-        private DateTime _end_date;
-
-        //Public properties
-        public string Title
-        {
-            get
-            {
-                return _title;
-            }
-            set
-            {
-                _title = value;
-            }
-        }
-        public string Stream
-        {
-            get
-            {
-                return _stream;
-            }
-            set
-            {
-                _stream = value;
-            }
-        }
-
-        public string Type
-        {
-            get
-            {
-                return _type;
-            }
-            set
-            {
-                _type = value;
-            }
-        }
-
-        public DateTime StartDate
-        {
-            get
-            {
-                return _start_date;
-            }
-            set
-            {
-                _start_date = value;
-            }
-        }
-        public DateTime EndDate
-        {
-            get
-            {
-                return _end_date;
-            }
-            set
-            {
-                _end_date = value;
-            }
-        }
-
-        //Each course can have multiple trainers
-        public List<Trainer> Trains = new List<Trainer>();
-        //Each course can have multiple students
-        public List<Student> Studs = new List<Student>();
-        //Each course can have multiple assignments
-        public List<Assignment> Assigns = new List<Assignment>();
-
-        public Course(string Title, string Stream, string Type, DateTime Start_Date, DateTime End_Date)
-        {
-            this.Title = Title;
-            this.Stream = Stream;
-            this.Type = Type;
-            this.StartDate = Start_Date;
-            this.EndDate = End_Date;
-        }
-
-        public override string ToString()
-        {
-            return $"Title: {_title}, Stream: {_stream}, Type: {_type}, Start Date: {_start_date.ToString("dd/MM/yyyy")}, End Date: {_end_date.ToString("dd/MM/yyyy")}";
-        }
-    }
-
-    class Trainer
-    {
-        //Private fields
-        private string _firstName;
-
-        private string _lastName;
-
-        private string _subject;
-
-        //Public properties
-        public string FirstName
-        {
-            get
-            {
-                return _firstName;
-            }
-            set
-            {
-                _firstName = value;
-            }
-        }
-
-        public string LastName
-        {
-            get
-            {
-                return _lastName;
-            }
-            set
-            {
-                _lastName = value;
-            }
-        }
-
-        public string Subject
-        {
-            get
-            {
-                return _subject;
-            }
-            set
-            {
-                _subject = value;
-            }
-        }
-
-        public Trainer(string FirstName, string LastName, string Subject)
-        {
-            this.FirstName = FirstName;
-            this.LastName = LastName;
-            this.Subject = Subject;
-        }
-
-        public override string ToString()
-        {
-            return $"Firstname: {_firstName}, Lastname: {_lastName}, Subject: {_subject}";
-        }
-
-
-    }
-
-
-
-
-    class Student
-    {
-        public List<Assignment> StudAss = new List<Assignment>();
-        public List<Course> StudCourse = new List<Course>();
-        //Private fields
-        private string _firstName;
-
-        private string _lastName;
-
-        private DateTime _dateOfBirth;
-
-        private int _tuitionFees;
-
-
-        //Public properties
-        public string FirstName
-        {
-            get
-            {
-                return _firstName;
-            }
-            set
-            {
-                _firstName = value;
-            }
-        }
-
-        public string LastName
-        {
-            get
-            {
-                return _lastName;
-            }
-            set
-            {
-                _lastName = value;
-            }
-        }
-
-        public DateTime DateOfBirth
-        {
-            get
-            {
-                return _dateOfBirth;
-            }
-            set
-            {
-                _dateOfBirth = value;
-            }
-        }
-
-        public int Fees
-        {
-            get
-            {
-                return _tuitionFees;
-            }
-            set
-            {
-                _tuitionFees = value;
-            }
-        }
-
-        public Student(string FirstName, string LastName, DateTime DateOfBirth, int Fees)
-        {
-            this.FirstName = FirstName;
-            this.LastName = LastName;
-            this.DateOfBirth = DateOfBirth;
-            this.Fees = Fees;
-        }
-
-        public Student()
-        {
-
-        }
-
-        public override string ToString()
-        {
-            return $"Firstname: {_firstName}, Lastname: {_lastName}, Date of birth: {_dateOfBirth.ToString("dd/MM/yyyy")}, Tuition Fees: {_tuitionFees}$";
-        }
-    }
-
-
-    class Assignment
-    {
-        //Private fields
-        private string _title;
-
-        private string _description;
-
-        private DateTime _subDateTime;
-
-        private int _oralMark;
-
-        private int _totalMark;
-
-        //Public properties
-        public string Title
-        {
-            get
-            {
-                return _title;
-            }
-            set
-            {
-                _title = value;
-            }
-        }
-        public string Description
-        {
-            get
-            {
-                return _description;
-            }
-            set
-            {
-                _description = value;
-            }
-        }
-
-        public DateTime SubDateTime
-        {
-            get
-            {
-                return _subDateTime;
-            }
-            set
-            {
-                _subDateTime = value;
-            }
-        }
-
-        public int OralMark
-        {
-            get
-            {
-                return _oralMark;
-            }
-            set
-            {
-                _oralMark = value;
-            }
-        }
-
-        public int TotalMark
-        {
-            get
-            {
-                return _totalMark;
-            }
-            set
-            {
-                _totalMark = value;
-            }
-
-        }
-
-        public Assignment(string Title, string Description, DateTime SubDateTime, int OralMark, int TotalMark)
-        {
-            this.Title = Title;
-            this.Description = Description;
-            this.SubDateTime = SubDateTime;
-            this.OralMark = OralMark;
-            this.TotalMark = TotalMark;
-        }
-
-        public override string ToString()
-        {
-            return $"Title: {_title}, Description: {Description}, Submission Date:{_subDateTime.ToString("dd/MM/yyyy")}, OralMark: {_oralMark}, TotalMark: {_totalMark}";
-        }
-
-    }
-
-    class School
-    {
-        public List<Student> Students = new List<Student>();
-
-        public List<Trainer> Trainers = new List<Trainer>();
-
-        public List<Assignment> Assignments = new List<Assignment>();
-
-        public List<Course> Courses = new List<Course>();
-    }
-
-    class Manager
-    {
-        private readonly School _school;
-
-        public Manager(School school)
-        {
-            this._school = school;
-        }
-
-
-        public bool AddStudentToCourse(Student student, Course course)
-        {
-            if (course.Studs.Contains(student))
-            {
-                return false;
-            }
-            course.Studs.Add(student);
-            student.StudAss.AddRange(course.Assigns); //All of the assignemnts of the course assigned to the student
-            student.StudCourse.Add(course);
-            return true;
-        }
-        //Trainers per courses
-        public bool AddTrainerToCourse(Trainer trainer, Course course)
-        {
-            if (course.Trains.Contains(trainer))
-            {
-                return false;
-            }
-            course.Trains.Add(trainer);
-            return true;
-        }
-
-        public bool AddAssignmentToCourse(Assignment assignment, Course course)
-        {
-            if (_school.Assignments.Contains(assignment))
-            {
-                return false;   
-            }
-            _school.Assignments.Add(assignment);
-
-            course.Assigns.Add(assignment);
-            foreach(var student in course.Studs)
-            {
-                student.StudAss.Add(assignment); //All of the assignments of the course assigned to the student
-            }
-            return true;
-
-        }
-
-        
-        public void AddStudent(Student student)
-        {
-            if (!_school.Students.Contains(student))
-            {
-                _school.Students.Add(student);
-            }
-        }
-
-        public void AddCourse(Course course)
-        {
-            if (!_school.Courses.Contains(course))
-            {
-                _school.Courses.Add(course);
-            }
-        }
-
-        public void AddTrainers(Trainer trainer)
-        {
-            if (!_school.Trainers.Contains(trainer))
-            {
-                _school.Trainers.Add(trainer);
-            }
-        }
-
-        public IEnumerable<Student> GetStudentDue(DateTime date, out DateTime start, out DateTime end)
-        {
-            end = date;
-            start = date;
-
-            while (start.DayOfWeek != DayOfWeek.Monday)
-            {
-                start = start.AddDays(-1);
-            }
-
-            while (end.DayOfWeek != DayOfWeek.Friday)
-            {
-                end = end.AddDays(1);
-            }
-
-
-            DateTime from = start, to = end;
-            return _school.Students.Where(x => x.StudAss.Any(f => f.SubDateTime >= from && f.SubDateTime <= to));
-        }
-    }
-
-
     class Program
     {
         private static School school = new School();
         private static Manager manager = new Manager(school);
+
         static void Main(string[] args)
-        {          
+        {
+            Run();
+        }
 
-            
-
+        private static void Run()
+        {
             Console.WriteLine("Welcome to Peoplecert's Student System");
 
-
-            
             bool ContM = true;
             while (ContM)
             {
@@ -480,7 +42,7 @@ namespace IndividualProjectBrief_PartA
                         DeadlineCheck();
                         break;
                     case "x":
-                        Console.WriteLine("Thank you for using the Student System"); //TODO: Delete
+                        Console.WriteLine("Thank you for using the Student System");
                         ContM = false;
                         break;
                     default:
@@ -489,14 +51,11 @@ namespace IndividualProjectBrief_PartA
             }
         }
 
-
-
         internal static void DataPresentation()
         {
             bool ContPres = true;
             while (ContPres)
             {
-
 
                 Console.WriteLine("Please select the type of object that you would like to preview");
 
@@ -547,9 +106,6 @@ namespace IndividualProjectBrief_PartA
                         break;
                 }
             }
-
-
-
         }
         static void DataPreview(int n)
         {
@@ -715,17 +271,16 @@ namespace IndividualProjectBrief_PartA
         {
             var s = new Random();
             Console.WriteLine("Option '1' Selected - Generating Synthetic Data");
-            //manager.AddStudent(new Student("George", "Kal", new DateTime(1994,10,19) ,s.Next(1000,2000)));  //TODO:DateTime replacements due
-            manager.AddStudent(new Student("George", "Kal", new DateTime(1994, 10, 19), s.Next(1000, 2000)));
-            manager.AddStudent(new Student("Giannis", "Pan", DateTime.Parse("10, 06, 1988"), s.Next(1000, 2000)));
-            manager.AddStudent(new Student("Olia", "Mour", DateTime.Parse("07, 08, 1995"), s.Next(1000, 2000)));
-            manager.AddStudent(new Student("Antonis", "Kat", DateTime.Parse("04, 11, 1994"), s.Next(1000, 2000)));
-            manager.AddStudent(new Student("Nikos", "Xen", DateTime.Parse("18, 04, 1994"), s.Next(1000, 2000)));
-            manager.AddStudent(new Student("Alex", "Kav", DateTime.Parse("16, 03, 1993"), s.Next(1000, 2000)));
-            manager.AddStudent(new Student("Antreas", "Plev", DateTime.Parse("01, 09, 1992"), s.Next(1000, 2000)));
-            manager.AddStudent(new Student("Anastasia", "Kalok", DateTime.Parse("24, 08, 1986"), s.Next(1000, 2000)));
-            manager.AddStudent(new Student("Agapi", "Kalok", DateTime.Parse("16, 02, 1996"), s.Next(1000, 2000)));
-            manager.AddStudent(new Student("Ilias", "Diam", DateTime.Parse("30, 10, 1990"), s.Next(1000, 2000)));
+            manager.AddStudent(new Student("George", "Kal",     new DateTime(1994, 10, 19), s.Next(1000, 2000)));
+            manager.AddStudent(new Student("Giannis", "Pan",    new DateTime(1988, 06, 10), s.Next(1000, 2000)));
+            manager.AddStudent(new Student("Olia", "Mour",      new DateTime(1995, 08, 07), s.Next(1000, 2000)));
+            manager.AddStudent(new Student("Antonis", "Kat",    new DateTime(1994, 11, 04), s.Next(1000, 2000)));
+            manager.AddStudent(new Student("Nikos", "Xen",      new DateTime(1994, 04, 18), s.Next(1000, 2000)));
+            manager.AddStudent(new Student("Alex", "Kav",       new DateTime(1993, 03, 16), s.Next(1000, 2000)));
+            manager.AddStudent(new Student("Antreas", "Plev",   new DateTime(1992, 09, 01), s.Next(1000, 2000)));
+            manager.AddStudent(new Student("Anastasia", "Kalok",new DateTime(1986, 08, 24), s.Next(1000, 2000)));
+            manager.AddStudent(new Student("Agapi", "Kalok",    new DateTime(1996, 02, 16), s.Next(1000, 2000)));
+            manager.AddStudent(new Student("Ilias", "Diam",     new DateTime(1990, 10, 30), s.Next(1000, 2000)));
 
             Console.WriteLine($"\n{school.Students.Count} records of Students added successfully!");
 
@@ -742,33 +297,31 @@ namespace IndividualProjectBrief_PartA
 
             Console.WriteLine($"\n{school.Trainers.Count} records of Trainers added successfully!");
 
-            manager.AddCourse(new Course("Adobe illustrator", "Graphics & Engineering Designing", "Design", DateTime.Parse("26,03,2021"),DateTime.Parse("26,03,2021")));
-            manager.AddCourse(new Course("Advanced Administration for Citrix", "Systems Engineering", "Virtual Machines",DateTime.Parse("01,04,2021"),DateTime.Parse("30,09,2021")));
-            manager.AddCourse(new Course("Fundamentals of Unix", "Systems Engineering", "Operation Systems", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
-            manager.AddCourse(new Course("Microsoft Azure", "MS Engineering", "Cloud Technologies", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
-            manager.AddCourse(new Course("Oracle E-Business Suite", "Informatics", "CRM", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
-            manager.AddCourse(new Course("Dynamics of Information Security", "Security Engineering", "Security Technologies", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
-            manager.AddCourse(new Course("Systems Analysis", "Systems Analysis", "Systems Analytics", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
-            manager.AddCourse(new Course("Digital Marketing", "Marketing", "Digital Marketing Engineering", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
-            manager.AddCourse(new Course("Office 365", "Infrastructure", "IT Infrastructure", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
-            manager.AddCourse(new Course("Advanced Geographic Information Systems", "Information Systems", "Geographic Systems", DateTime.Parse("01,04,2021"), DateTime.Parse("30,09,2021")));
+            manager.AddCourse(new Course("Adobe illustrator", "Graphics & Engineering Designing", "Design",                      new DateTime(2021,03,26), new DateTime(2021,03,26)));
+            manager.AddCourse(new Course("Advanced Administration for Citrix", "Systems Engineering", "Virtual Machines",        new DateTime(2021,04,23), new DateTime(2021,09,30)));
+            manager.AddCourse(new Course("Fundamentals of Unix", "Systems Engineering", "Operation Systems",                     new DateTime(2021,04,25), new DateTime(2021,09,30)));
+            manager.AddCourse(new Course("Microsoft Azure", "MS Engineering", "Cloud Technologies",                              new DateTime(2021,04,29), new DateTime(2021,09,30)));
+            manager.AddCourse(new Course("Oracle E-Business Suite", "Informatics", "CRM",                                        new DateTime(2021,04,30), new DateTime(2021,09,30)));
+            manager.AddCourse(new Course("Dynamics of Information Security", "Security Engineering", "Security Technologies",    new DateTime(2021,04,30), new DateTime(2021,09,30)));
+            manager.AddCourse(new Course("Systems Analysis", "Systems Analysis", "Systems Analytics",                            new DateTime(2021,05,01), new DateTime(2021,09,30)));
+            manager.AddCourse(new Course("Digital Marketing", "Marketing", "Digital Marketing Engineering",                      new DateTime(2021,06,01), new DateTime(2021,09,30)));
+            manager.AddCourse(new Course("Office 365", "Infrastructure", "IT Infrastructure",                                    new DateTime(2021,07,01), new DateTime(2021,09,30)));
+            manager.AddCourse(new Course("Advanced Geographic Information Systems", "Information Systems", "Geographic Systems", new DateTime(2021,08,01), new DateTime(2021,09,30)));
 
             Console.WriteLine($"\n{school.Courses.Count} records of Courses added successfully!");
 
-            manager.AddAssignmentToCourse(new Assignment("Gant-Chart", "Project Management", DateTime.Parse("26,03,2021"), 10, 90), school.Courses[s.Next(0, school.Courses.Count-1)]);
-            manager.AddAssignmentToCourse(new Assignment("Budget Analysis", "Financial analysis of project", DateTime.Parse("26,03,2021"), 70, 30), school.Courses[s.Next(0, school.Courses.Count - 1)]);
-            manager.AddAssignmentToCourse(new Assignment("Class Diagram", "Programs class diagram", DateTime.Parse("26,03,2021"), 10, 90), school.Courses[s.Next(0, school.Courses.Count - 1)]);
-            manager.AddAssignmentToCourse(new Assignment("ERD Diagram", "Database diagram", DateTime.Parse("26,03,2021"), 10, 90), school.Courses[s.Next(0, school.Courses.Count - 1)]);
-            manager.AddAssignmentToCourse(new Assignment("Systems Analysis", "Systems analysis", DateTime.Parse("26,03,2021"), 40, 60), school.Courses[s.Next(0, school.Courses.Count - 1)]);
-            manager.AddAssignmentToCourse(new Assignment("Business Plan", "Presentation of the business plan", DateTime.Parse("26,03,2021"), 70, 30), school.Courses[s.Next(0, school.Courses.Count - 1)]);
-            manager.AddAssignmentToCourse(new Assignment("Bug Analysis", "Work item management - git", DateTime.Parse("26,03,2021"), 0, 100), school.Courses[s.Next(0, school.Courses.Count - 1)]);
-            manager.AddAssignmentToCourse(new Assignment("Software Develpment A", "Software Implementation Part A", DateTime.Parse("26,03,2021"), 0, 100), school.Courses[s.Next(0, school.Courses.Count - 1)]);
-            manager.AddAssignmentToCourse(new Assignment("Software Development B", "Software Implementation", DateTime.Parse("26,03,2021"), 0, 100), school.Courses[s.Next(0, school.Courses.Count - 1)]);
-            manager.AddAssignmentToCourse(new Assignment("QA Testing Methods", "Testing methodologies", DateTime.Parse("26,03,2021"), 0, 100), school.Courses[s.Next(0, school.Courses.Count - 1)]);
+            manager.AddAssignmentToCourse(new Assignment("Gant-Chart", "Project Management",                        new DateTime(2021,03,26), 10, 90), school.Courses[s.Next(0, school.Courses.Count - 1)]);
+            manager.AddAssignmentToCourse(new Assignment("Budget Analysis", "Financial analysis of project",        new DateTime(2021,03,26), 70, 30), school.Courses[s.Next(0, school.Courses.Count - 1)]);
+            manager.AddAssignmentToCourse(new Assignment("Class Diagram", "Programs class diagram",                 new DateTime(2021,03,26), 10, 90), school.Courses[s.Next(0, school.Courses.Count - 1)]);
+            manager.AddAssignmentToCourse(new Assignment("ERD Diagram", "Database diagram",                         new DateTime(2021,03,26), 10, 90), school.Courses[s.Next(0, school.Courses.Count - 1)]);
+            manager.AddAssignmentToCourse(new Assignment("Systems Analysis", "Systems analysis",                    new DateTime(2021,03,26), 40, 60), school.Courses[s.Next(0, school.Courses.Count - 1)]);
+            manager.AddAssignmentToCourse(new Assignment("Business Plan", "Presentation of the business plan",      new DateTime(2021,03,26), 70, 30), school.Courses[s.Next(0, school.Courses.Count - 1)]);
+            manager.AddAssignmentToCourse(new Assignment("Bug Analysis", "Work item management - git",              new DateTime(2021,03,26), 0, 100), school.Courses[s.Next(0, school.Courses.Count - 1)]);
+            manager.AddAssignmentToCourse(new Assignment("Software Develpment A", "Software Implementation Part A", new DateTime(2021,03,26), 0, 100), school.Courses[s.Next(0, school.Courses.Count - 1)]);
+            manager.AddAssignmentToCourse(new Assignment("Software Development B", "Software Implementation",       new DateTime(2021,03,26), 0, 100), school.Courses[s.Next(0, school.Courses.Count - 1)]);
+            manager.AddAssignmentToCourse(new Assignment("QA Testing Methods", "Testing methodologies",             new DateTime(2021,03,26), 0, 100), school.Courses[s.Next(0, school.Courses.Count - 1)]);
 
             Console.WriteLine($"\n{school.Assignments.Count} records of Assignments added successfully!");
-
-
 
             Console.WriteLine("---------------------------------------------------------------------------------------------------------");
             Console.WriteLine("Assigning Assignments to Courses: OK");
@@ -778,13 +331,11 @@ namespace IndividualProjectBrief_PartA
             for (int i = 0; i <= 50; i++)
             {
                 
-
                 int courseRandom = s.Next(0, (school.Courses.Count - 1));
                 int StudentRandom = s.Next(0, (school.Students.Count - 1));
 
                 var course = school.Courses[courseRandom];
                 var student = school.Students[StudentRandom];
-
 
                 manager.AddStudentToCourse(student, course);
    
@@ -797,7 +348,6 @@ namespace IndividualProjectBrief_PartA
             for (int i = 0; i < 50; i++)
             {
               
-
                 int CourseRandom = s.Next(0, (school.Courses.Count - 1));
                 int TrainerRandom = s.Next(0, (school.Trainers.Count - 1));
 
@@ -813,7 +363,6 @@ namespace IndividualProjectBrief_PartA
             }
             Console.WriteLine("Assigning Trainers to Courses: OK");
             Console.WriteLine("---------------------------------------------------------------------------------------------------------");          
-
         }
 
         private static void ManualData()
@@ -893,7 +442,6 @@ namespace IndividualProjectBrief_PartA
                         continue;
                     }
                 }
-
             }
 
             void AddTrainers()
@@ -1024,7 +572,6 @@ namespace IndividualProjectBrief_PartA
                         continue;
                     }
                 }
-
             }
         }
 
@@ -1047,7 +594,7 @@ namespace IndividualProjectBrief_PartA
 
             if (students.Any()) //Check if there is at least one student
             {
-                Console.WriteLine($"\nList of students from week commencing: {start.ToShortDateString()} to {end.ToShortDateString()}");
+                Console.WriteLine($"\nThe students that are due to submit an assignment from [{start.ToShortDateString()}] to [{end.ToShortDateString()}] is:");
 
                 foreach (var student in students)
                 {
@@ -1056,10 +603,8 @@ namespace IndividualProjectBrief_PartA
             }
             else
             {
-                Console.WriteLine($"No students are due to submit an assignment from {start.ToShortDateString()} to {end.ToShortDateString()}" );
+                Console.WriteLine($"No students are due to submit an assignment from [{start.ToShortDateString()}] to [{end.ToShortDateString()}]" );
             }
-
         }
     }
-    
 }
