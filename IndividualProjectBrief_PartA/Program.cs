@@ -480,7 +480,7 @@ namespace IndividualProjectBrief_PartA
                         DeadlineCheck();
                         break;
                     case "x":
-                        Console.WriteLine("Thank you for using the Student System");
+                        Console.WriteLine("Thank you for using the Student System"); //TODO: Delete
                         ContM = false;
                         break;
                     default:
