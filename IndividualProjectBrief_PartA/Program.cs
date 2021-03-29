@@ -715,7 +715,7 @@ namespace IndividualProjectBrief_PartA
         {
             var s = new Random();
             Console.WriteLine("Option '1' Selected - Generating Synthetic Data");
-            //manager.AddStudent(new Student("George", "Kal", new DateTime(1994,10,19) ,s.Next(1000,2000)));  //TODO:DateTime replace
+            //manager.AddStudent(new Student("George", "Kal", new DateTime(1994,10,19) ,s.Next(1000,2000)));  //TODO:DateTime replacements due
             manager.AddStudent(new Student("George", "Kal", new DateTime(1994, 10, 19), s.Next(1000, 2000)));
             manager.AddStudent(new Student("Giannis", "Pan", DateTime.Parse("10, 06, 1988"), s.Next(1000, 2000)));
             manager.AddStudent(new Student("Olia", "Mour", DateTime.Parse("07, 08, 1995"), s.Next(1000, 2000)));
