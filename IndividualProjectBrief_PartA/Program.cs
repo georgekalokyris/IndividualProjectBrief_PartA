@@ -3,6 +3,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/* George Kalokyris (giorgos.kalokyris@peoplecert.onmicrosoft.com) - 30/03/2021 - Individual Project Part A Assignment */
+
 namespace IndividualProjectBrief_PartA
 {
     class Program
@@ -17,17 +19,23 @@ namespace IndividualProjectBrief_PartA
 
         private static void Run()
         {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.BackgroundColor = ConsoleColor.Red;
             Console.WriteLine("Welcome to Peoplecert's Student System");
+            Console.ResetColor();
 
             bool ContM = true;
             while (ContM)
             {
+                
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 //Top Menu
                 Console.WriteLine("\nPlease Select an option to continue");
                 Console.WriteLine("\nPress 1 for Data Modification");
                 Console.WriteLine("Press 2 for Data Presentation");
                 Console.WriteLine("Press 3 for Deadline Assignment Checks");
                 Console.WriteLine("Press x key to exit");
+               
 
 
                 switch (Console.ReadLine())
@@ -48,6 +56,7 @@ namespace IndividualProjectBrief_PartA
                     default:
                         continue;
                 }
+                Console.ResetColor();
             }
         }
 
@@ -56,6 +65,7 @@ namespace IndividualProjectBrief_PartA
             bool ContPres = true;
             while (ContPres)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
 
                 Console.WriteLine("Please select the type of object that you would like to preview");
 
@@ -104,11 +114,15 @@ namespace IndividualProjectBrief_PartA
                     case "x":
                         ContPres = false;
                         break;
+                Console.ResetColor();
+
                 }
             }
         }
         static void DataPreview(int n)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
+
             if (n == 1)
             {
                 foreach (var i in school.Students)
@@ -249,16 +263,19 @@ namespace IndividualProjectBrief_PartA
             else Console.WriteLine("No valid option selected");
 
             Console.WriteLine("---------------------------------------------------------------------------------------------------------");
+            Console.ResetColor();
+
         }
 
 
         private static void DataManipulation()
         {
-            
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Please select an option to continue");
             Console.WriteLine("Press 1 to use synthetic data");
             Console.WriteLine("Press 2 to manually enter data");
             Console.WriteLine("Press 3 to remove data");
+            Console.ResetColor();
 
             switch (Console.ReadLine())
             {
@@ -278,7 +295,11 @@ namespace IndividualProjectBrief_PartA
         private static void SyntheticData()
         {
             var s = new Random();
+            Console.ForegroundColor = ConsoleColor.Red;
+
             Console.WriteLine("Option '1' Selected - Generating Synthetic Data");
+                        Console.ForegroundColor = ConsoleColor.Green;
+
             manager.AddStudent(new Student("George", "Kal",     new DateTime(1994, 10, 19), s.Next(1000, 2000)));
             manager.AddStudent(new Student("Giannis", "Pan",    new DateTime(1988, 06, 10), s.Next(1000, 2000)));
             manager.AddStudent(new Student("Olia", "Mour",      new DateTime(1995, 08, 07), s.Next(1000, 2000)));
@@ -370,22 +391,29 @@ namespace IndividualProjectBrief_PartA
                 }
             }
             Console.WriteLine("Assigning Trainers to Courses: OK");
-            Console.WriteLine("---------------------------------------------------------------------------------------------------------");          
+            Console.WriteLine("---------------------------------------------------------------------------------------------------------");
+            Console.ResetColor();
+
         }
 
         private static void ManualData()
         {
-            Console.WriteLine("Option '2' Selected - Manual Data Input");
+            Console.ForegroundColor = ConsoleColor.Red;
+
+            Console.WriteLine("Option '2' Selected - Manual Data Input"); 
             bool ContM2 = true;
             while (ContM2)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+
+
                 Console.WriteLine("Please select the table that you would like to populate");
                 Console.WriteLine("\nPress 1 for Students");
                 Console.WriteLine("Press 2 for Courses");
                 Console.WriteLine("Press 3 for Assignments");
                 Console.WriteLine("Press 4 for Trainers");
-                
                 Console.WriteLine("Press x to return to the Main Menu");
+                Console.ResetColor();
 
 
                 switch (Console.ReadLine())
@@ -420,8 +448,10 @@ namespace IndividualProjectBrief_PartA
                 bool ContS = true;
                 while (ContS)
                 {
-                    Console.WriteLine("Adding Students");
-                    Console.WriteLine("Please enter the student's first name");
+                    Console.ForegroundColor = ConsoleColor.Green;
+
+                    Console.WriteLine("---------Adding Students---------");
+                    Console.WriteLine("\nPlease enter the student's first name");
                     string FirstName = Console.ReadLine();
 
                     Console.WriteLine("Please enter the student's last name");
@@ -435,9 +465,11 @@ namespace IndividualProjectBrief_PartA
 
                     var student = new Student(FirstName, LastName, DateOfBirth, Fees);
                     manager.AddStudent(student);
+                    Console.ForegroundColor = ConsoleColor.Red;
 
                     Console.WriteLine("\nRecord added: ");
                     Console.WriteLine(student);
+                    Console.ForegroundColor = ConsoleColor.Green;
 
                     Console.WriteLine("\n\nPress enter to continue adding records or 'x' to return to the top menu");
 
@@ -450,6 +482,8 @@ namespace IndividualProjectBrief_PartA
                     {
                         continue;
                     }
+                    Console.ResetColor();
+
                 }
             }
 
@@ -458,7 +492,9 @@ namespace IndividualProjectBrief_PartA
                 bool ContT = true;
                 while (ContT)
                 {
-                    Console.WriteLine("Adding Trainers");
+                    Console.ForegroundColor = ConsoleColor.Green;
+
+                    Console.WriteLine("---------Adding Trainers---------");
 
                     Console.WriteLine("Please enter the trainer's first name");
                     string FirstName = Console.ReadLine();
@@ -482,9 +518,11 @@ namespace IndividualProjectBrief_PartA
                     {
                         Console.WriteLine("There are no active courses to assign the trainer to");
                     }
+                    Console.ForegroundColor = ConsoleColor.Red;
 
                     Console.WriteLine("\nRecord added: ");
                     Console.WriteLine(trainer);
+                    Console.ForegroundColor = ConsoleColor.Green;
 
                     Console.WriteLine("\n\nPress enter to continue adding records or 'x' to return to the top menu");
 
@@ -497,6 +535,8 @@ namespace IndividualProjectBrief_PartA
                     {
                         continue;
                     }
+                    Console.ResetColor();
+
                 }
             }
 
@@ -505,7 +545,9 @@ namespace IndividualProjectBrief_PartA
                 bool ContA = true;
                 while (ContA)
                 {
-                    Console.WriteLine("Adding Assignments");
+                    Console.ForegroundColor = ConsoleColor.Green;
+
+                    Console.WriteLine("---------Adding Assignments---------");
                     Console.WriteLine("Please enter the title of the Assignment");
                     string Title = Console.ReadLine();
 
@@ -526,7 +568,8 @@ namespace IndividualProjectBrief_PartA
 
                    
                     var assignment = new Assignment(Title, Description, SubDateTime, OralMark, TotalMark);
-                    
+                    Console.ForegroundColor = ConsoleColor.Red;
+
                     if (manager.AddAssignmentToCourse(assignment, course))
                     {
                         Console.WriteLine($"\nRecord added: {assignment} \nto course {course}");
@@ -536,6 +579,7 @@ namespace IndividualProjectBrief_PartA
                     {
                         Console.WriteLine("Assignment is already in course");
                     }
+                    Console.ForegroundColor = ConsoleColor.Green;
 
                     Console.WriteLine("\n\nPress enter to continue adding records or 'x' to return to the top menu");
 
@@ -548,6 +592,8 @@ namespace IndividualProjectBrief_PartA
                     {
                         continue;
                     }
+                    Console.ResetColor();
+
                 }
             }
 
@@ -556,7 +602,9 @@ namespace IndividualProjectBrief_PartA
                 bool ContC = true;
                 while (ContC)
                 {
-                    Console.WriteLine("Adding Course");
+                    Console.ForegroundColor = ConsoleColor.Green;
+
+                    Console.WriteLine("---------Adding Courses---------");
 
                     Console.WriteLine("Please enter the title of the Course");
                     string Title = Console.ReadLine();
@@ -576,11 +624,14 @@ namespace IndividualProjectBrief_PartA
                     var newcourse = new Course(Title, Stream, Type, StartDate, EndDate);
 
                     manager.AddCourse(newcourse);
+                    Console.ForegroundColor = ConsoleColor.Red;
 
                     Console.WriteLine("\n Record added: ");
                     Console.WriteLine(newcourse);
+                    Console.ForegroundColor = ConsoleColor.Green;
 
                     Console.WriteLine("\n\nPress enter to continue adding records or 'x' to return to the top menu");
+                    Console.ResetColor();
 
                     if (Console.ReadLine() == "x")
                     {
@@ -591,13 +642,14 @@ namespace IndividualProjectBrief_PartA
                     {
                         continue;
                     }
+
                 }
             }
         }
 
         private static Course PickCourseOptions()
         {
-            
+
             DataPreview(4);
 
             Console.WriteLine("Please select the ID of the course to assign the assignment to");
@@ -605,28 +657,42 @@ namespace IndividualProjectBrief_PartA
             var course = school.Courses[indcourse];
             return course;
             
+
+
         }
 
         private static void DeadlineCheck()
         {
+            Console.ForegroundColor = ConsoleColor.Red;
+
+            Console.WriteLine("Option '3' Selected - Assignment deadline check");
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Please provide a date to check");
             DateTime date = DateTime.Parse(Console.ReadLine());
             
             var students = manager.GetStudentDue(date, out var start, out var end);
+            Console.ForegroundColor = ConsoleColor.Red;
 
             if (students.Any()) //Check if there is at least one student
             {
                 Console.WriteLine($"\nThe students that are due to submit an assignment from [{start.ToShortDateString()}] to [{end.ToShortDateString()}] is:");
+                
+                Console.ForegroundColor = ConsoleColor.Green;
 
                 foreach (var student in students)
                 {
                     Console.WriteLine(student);
                 }
+                Console.ResetColor();
+
             }
             else
             {
                 Console.WriteLine($"No students are due to submit an assignment from [{start.ToShortDateString()}] to [{end.ToShortDateString()}]" );
             }
+            Console.ResetColor();
+
         }
     }
 }
