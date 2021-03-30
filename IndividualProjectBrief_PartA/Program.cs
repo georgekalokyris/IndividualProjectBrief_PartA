@@ -133,10 +133,18 @@ namespace IndividualProjectBrief_PartA
             }
             else if (n == 4)
             {
-                foreach (var i in school.Courses)
+                if (!school.Courses.Any())
                 {
-                    Console.WriteLine($"-------------------------------------------------------------------------------------------------------- \n{school.Courses.IndexOf(i)}.{i}");
+                    Console.WriteLine("There are no active courses - You can add either manually or by using synthetic data");
                 }
+                else
+                {
+                    foreach (var i in school.Courses)
+                    {
+                        Console.WriteLine($"-------------------------------------------------------------------------------------------------------- \n{school.Courses.IndexOf(i)}.{i}");
+                    }
+                }
+               
             }
             else if (n == 5)
             {
@@ -240,7 +248,7 @@ namespace IndividualProjectBrief_PartA
 
             else Console.WriteLine("No valid option selected");
 
-            Console.WriteLine("--------------------------------------------------------------------------------------------------------------------------");
+            Console.WriteLine("---------------------------------------------------------------------------------------------------------");
         }
 
 
@@ -373,9 +381,10 @@ namespace IndividualProjectBrief_PartA
             {
                 Console.WriteLine("Please select the table that you would like to populate");
                 Console.WriteLine("\nPress 1 for Students");
-                Console.WriteLine("Press 2 for Trainers");
+                Console.WriteLine("Press 2 for Courses");
                 Console.WriteLine("Press 3 for Assignments");
-                Console.WriteLine("Press 4 for Courses");
+                Console.WriteLine("Press 4 for Trainers");
+                
                 Console.WriteLine("Press x to return to the Main Menu");
 
 
@@ -386,7 +395,7 @@ namespace IndividualProjectBrief_PartA
                         ContM2 = true;
                         continue;
                     case "2":
-                        AddTrainers();
+                        AddCourses();
                         ContM2 = true;
                         continue;
                     case "3":
@@ -394,7 +403,7 @@ namespace IndividualProjectBrief_PartA
                         ContM2 = true;
                         continue;
                     case "4":
-                        AddCourses();
+                        AddTrainers();
                         ContM2 = true;
                         continue;
                     case "x":
@@ -463,10 +472,18 @@ namespace IndividualProjectBrief_PartA
                     var trainer = new Trainer(FirstName, LastName, Subject);
                     manager.AddTrainers(trainer);
 
-                    Course course = PickCourseOptions();
+                    if (school.Courses.Any())
+                    {
+                        Course course = PickCourseOptions();
+                        manager.AddTrainerToCourse(trainer, course);
+                        Console.WriteLine($"Trainer: {trainer} assigned to Course: {course}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("There are no active courses to assign the trainer to");
+                    }
 
-                    manager.AddTrainerToCourse(trainer, course);
-                    Console.WriteLine("\n Record added: ");
+                    Console.WriteLine("\nRecord added: ");
                     Console.WriteLine(trainer);
 
                     Console.WriteLine("\n\nPress enter to continue adding records or 'x' to return to the top menu");
@@ -498,18 +515,21 @@ namespace IndividualProjectBrief_PartA
                     Console.WriteLine("Please enter the Assignment's final submission date");
                     DateTime SubDateTime = Convert.ToDateTime(Console.ReadLine());
 
-                    Console.WriteLine("Please enter the Assignments oral mark");
+                    Console.WriteLine("Please enter the Assignment's oral mark");
                     int OralMark = Convert.ToInt32(Console.ReadLine());
 
-                    Console.WriteLine("Please enter the Assignments total mark");
+                    Console.WriteLine("Please enter the Assignment's total mark");
                     int TotalMark = Convert.ToInt32(Console.ReadLine());
 
-                    Course course = PickCourseOptions();
+                   
+                   Course course = PickCourseOptions();
 
+                   
                     var assignment = new Assignment(Title, Description, SubDateTime, OralMark, TotalMark);
+                    
                     if (manager.AddAssignmentToCourse(assignment, course))
                     {
-                        Console.WriteLine($"\n Record added: {assignment} to course {course}");
+                        Console.WriteLine($"\nRecord added: {assignment} \nto course {course}");
                         Console.WriteLine();
                     }
                     else
@@ -550,7 +570,7 @@ namespace IndividualProjectBrief_PartA
                     Console.WriteLine("Please enter the course's starting date");
                     DateTime StartDate = Convert.ToDateTime(Console.ReadLine());
 
-                    Console.WriteLine("Please enter teh courese's end date");
+                    Console.WriteLine("Please enter teh course's end date");
                     DateTime EndDate = Convert.ToDateTime(Console.ReadLine());
 
                     var newcourse = new Course(Title, Stream, Type, StartDate, EndDate);
@@ -579,10 +599,12 @@ namespace IndividualProjectBrief_PartA
         {
             
             DataPreview(4);
-            Console.WriteLine("Please select a course to assign the assignment to");
+
+            Console.WriteLine("Please select the ID of the course to assign the assignment to");
             int indcourse = int.Parse(Console.ReadLine());
             var course = school.Courses[indcourse];
             return course;
+            
         }
 
         private static void DeadlineCheck()
